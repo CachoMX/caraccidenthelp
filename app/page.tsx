@@ -495,6 +495,10 @@ export default function Home() {
               <a href="https://saddlebrown-nightingale-345621.hostingersite.com/privacy-policy/" style={{ color: "#16bc35" }}>
                 Privacy Policy
               </a>
+              &nbsp;&mdash;&nbsp; Created by{" "}
+              <a href="https://carlosaragon.online" style={{ color: "#16bc35" }}>
+                Carlos Aragon
+              </a>
             </p>
           </div>
         </div>
