@@ -80,7 +80,7 @@ export default function Home() {
           }}
         >
           Connect With{" "}
-          <span style={{ color: "#16bc35" }}>Top Car Accident Lawyers</span>{" "}
+          <span style={{ color: "#bc1616" }}>Top Car Accident Lawyers</span>{" "}
           Who Fight to{" "}
           <strong style={{ textDecoration: "underline" }}>
             Maximize Your Payout
@@ -174,7 +174,7 @@ export default function Home() {
                 }}
               >
                 Try Our Compensation{" "}
-                <span style={{ color: "#16bc35" }}>Calculator</span> And See How
+                <span style={{ color: "#bc1616" }}>Calculator</span> And See How
                 Much You Could Get For Compensation
               </h2>
               <p
@@ -197,7 +197,7 @@ export default function Home() {
                 href="#form-section"
                 style={{
                   display: "block",
-                  background: "#16bc35",
+                  background: "#bc1616",
                   color: "#ffffff",
                   fontFamily: "var(--font-raleway), Arial, sans-serif",
                   fontWeight: 700,
@@ -312,7 +312,7 @@ export default function Home() {
             href="#form-section"
             style={{
               display: "inline-block",
-              background: "#16bc35",
+              background: "#bc1616",
               color: "#ffffff",
               fontFamily: "var(--font-raleway), Arial, sans-serif",
               fontWeight: 700,
@@ -331,12 +331,12 @@ export default function Home() {
 
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
           SECTION 11 — DON'T WAIT + FOOTER (all screens)
-          Has --awb-color5 (green) border-top
+          Has --awb-color5 (red) border-top
       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <section
         style={{
           background: "#2b313c",
-          borderTop: "4px solid #16bc35",
+          borderTop: "4px solid #bc1616",
         }}
       >
         {/* DON'T WAIT banner */}
@@ -386,7 +386,7 @@ export default function Home() {
             attorneys can be found at{" "}
             <a
               href="https://www.caraccidenthelp.net/sponsors/"
-              style={{ color: "#16bc35" }}
+              style={{ color: "#bc1616" }}
             >
               https://www.caraccidenthelp.net/sponsors/
             </a>
@@ -444,7 +444,7 @@ export default function Home() {
               </p>
               <a
                 href="tel:+12543584941"
-                style={{ color: "#16bc35", fontSize: 9, textDecoration: "none" }}
+                style={{ color: "#bc1616", fontSize: 9, textDecoration: "none" }}
               >
                 +1 254-358-4941
               </a>
@@ -463,7 +463,7 @@ export default function Home() {
               </p>
               <a
                 href="mailto:support@caraccidenthelp.net"
-                style={{ color: "#16bc35", fontSize: 9, textDecoration: "none" }}
+                style={{ color: "#bc1616", fontSize: 9, textDecoration: "none" }}
               >
                 support@caraccidenthelp.net
               </a>
@@ -488,15 +488,15 @@ export default function Home() {
               &copy; 2012&ndash;2026 &nbsp;CarAccidentHelp.net &nbsp;&mdash;&nbsp;
               All Rights Reserved &nbsp;&mdash;&nbsp; Get the Compensation You
               Deserve Today &nbsp;&mdash;&nbsp;{" "}
-              <a href="https://saddlebrown-nightingale-345621.hostingersite.com/terms/" style={{ color: "#16bc35" }}>
+              <a href="https://saddlebrown-nightingale-345621.hostingersite.com/terms/" style={{ color: "#bc1616" }}>
                 Terms &amp; Conditions.
               </a>{" "}
               &nbsp;
-              <a href="https://saddlebrown-nightingale-345621.hostingersite.com/privacy-policy/" style={{ color: "#16bc35" }}>
+              <a href="https://saddlebrown-nightingale-345621.hostingersite.com/privacy-policy/" style={{ color: "#bc1616" }}>
                 Privacy Policy
               </a>
               &nbsp;&mdash;&nbsp; Created by{" "}
-              <a href="https://carlosaragon.online" style={{ color: "#16bc35" }}>
+              <a href="https://carlosaragon.online" style={{ color: "#bc1616" }}>
                 Carlos Aragon
               </a>
             </p>
