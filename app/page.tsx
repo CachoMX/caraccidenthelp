@@ -1,17 +1,5 @@
-"use client";
-import { useEffect } from "react";
 import Image from "next/image";
-
-const GROWFORM_SRC = "https://embed.growform.co/client/67cf74bca2ec54000b491be6";
-
-function loadGrowform(containerId: string) {
-  const wrapper = document.getElementById(containerId);
-  if (!wrapper || wrapper.querySelector("script")) return;
-  const script = document.createElement("script");
-  script.type = "text/javascript";
-  script.src = GROWFORM_SRC;
-  wrapper.appendChild(script);
-}
+import GrowformEmbed from "./components/GrowformEmbed";
 
 const benefits = [
   {
@@ -37,23 +25,6 @@ const benefits = [
 ];
 
 export default function Home() {
-  useEffect(() => {
-    const wrapper = document.getElementById("growform-wrapper");
-    if (!wrapper) return;
-    // Defer Growform until the form section is near the viewport
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          loadGrowform("growform-wrapper");
-          observer.disconnect();
-        }
-      },
-      { rootMargin: "300px" }
-    );
-    observer.observe(wrapper);
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <>
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -154,7 +125,7 @@ export default function Home() {
           </div>
           {/* Growform — between the two CTA texts */}
           <div style={{ margin: 0, padding: 0, lineHeight: 0, fontSize: 0 }}>
-            <div id="growform-wrapper" />
+            <GrowformEmbed />
           </div>
           {/* Bottom gray cap — closes the form visually */}
           <div

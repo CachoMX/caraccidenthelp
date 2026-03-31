@@ -32,9 +32,6 @@ export default function RootLayout({
       <head>
         {/* Preload LCP hero image so it starts downloading immediately */}
         <link rel="preload" as="image" href="/hero-bg-full.webp" fetchPriority="high" />
-        {/* Preconnect to Growform so the form loads faster */}
-        <link rel="preconnect" href="https://embed.growform.co" />
-        <link rel="preconnect" href="https://assets.growform.co" />
       </head>
       <body className="min-h-screen flex flex-col antialiased">
         {children}
