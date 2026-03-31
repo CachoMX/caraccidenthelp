@@ -1,26 +1,60 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-green: #16bc35;
+  --color-green-hover: #13a82e;
+  --color-dark: #2b313c;
+  --color-dark2: #3b4251;
+  --color-text: #666666;
+  --color-light: #f5f5f5;
+  --color-border: #e2e2e2;
+  --font-heading: var(--font-raleway);
+  --font-body: var(--font-open-sans);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body), Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  line-height: 2;
+  color: var(--color-text);
+  background: #fff;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading), Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-dark2);
+  line-height: 1.4;
+}
+
+.btn-green {
+  display: inline-block;
+  background-color: var(--color-green);
+  color: #fff;
+  font-family: var(--font-heading), Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 14px 36px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background-color 0.2s;
+  cursor: pointer;
+}
+.btn-green:hover {
+  background-color: var(--color-green-hover);
+}
+
+/* Growform embed */
+#growform-wrapper,
+#growform-wrapper-2 {
+  width: 100%;
+  min-height: 400px;
+}
+
+#growform_form,
+.growform_form {
+  height: 1000px !important;
 }
