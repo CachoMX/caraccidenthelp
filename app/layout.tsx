@@ -33,7 +33,7 @@ export default function RootLayout({
         {/* Preload LCP hero image so it starts downloading immediately */}
         <link rel="preload" as="image" href="/hero-bg-full.webp" fetchPriority="high" />
       </head>
-      <body className="min-h-screen flex flex-col antialiased">
+      <body>
         {children}
       </body>
     </html>
