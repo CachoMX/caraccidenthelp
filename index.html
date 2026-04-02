@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Injured in an Accident? | CarAccidentHelp.net</title>
+  <meta name="description" content="Connect with top car accident lawyers who fight to maximize your payout. Use our free compensation calculator to see what you qualify for." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;800&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      font-family: 'Open Sans', Arial, sans-serif;
+      font-size: 15px;
+      line-height: 2;
+      color: #666;
+      background: #fff;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Raleway', Arial, sans-serif;
+      font-weight: 700;
+      color: #3b4251;
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    a { text-decoration: none; }
+
+    /* ── Hero ── */
+    .hero {
+      background-image: linear-gradient(rgba(43,49,60,0.65), rgba(43,49,60,0.65)), url('public/hero-bg-full.webp');
+      background-size: cover;
+      background-position: center top;
+      padding: 60px 24px 70px;
+      text-align: center;
+    }
+    .hero-logo { margin-bottom: 24px; }
+    .hero-logo img { height: 66px; width: auto; display: inline-block; }
+    .hero h1 {
+      font-size: 34px;
+      font-weight: 700;
+      color: #fff;
+      margin: 0 0 20px;
+      text-transform: none;
+    }
+    .hero p {
+      font-family: 'Raleway', Arial, sans-serif;
+      font-weight: 600;
+      font-size: 20px;
+      color: #fff;
+      margin: 0;
+      line-height: 1.5;
+    }
+    .hero .accent { color: #16bc35; }
+
+    /* ── Form section ── */
+    .form-section { background: #fff; padding: 32px 24px 0; }
+    .form-section .inner { max-width: 1140px; margin: 0 auto; }
+
+    .form-card-top {
+      background: #e2e2e2;
+      border-radius: 28px 28px 0 0;
+      padding: 28px 48px;
+      text-align: center;
+    }
+    .form-card-top p {
+      font-family: 'Raleway', Arial, sans-serif;
+      font-weight: 400;
+      font-size: 35px;
+      color: #003954;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    #growform-wrapper { width: 100%; min-height: 620px; line-height: 0; font-size: 0; }
+
+    .form-card-bottom {
+      background: #e2e2e2;
+      border-radius: 0 0 28px 28px;
+      padding: 28px 48px;
+      margin-top: -16px;
+      margin-bottom: 36px;
+    }
+
+    /* ── 3-col ── */
+    .three-col { display: flex; align-items: flex-start; flex-wrap: wrap; }
+    .col-car { flex: 0 0 25%; width: 25%; display: flex; justify-content: center; }
+    .col-car img { width: 100%; height: auto; display: block; }
+    .col-spacer { flex: 0 0 10%; width: 10%; }
+    .col-text { flex: 0 0 65%; width: 65%; }
+    .col-text h2 {
+      font-size: 29px;
+      font-weight: 700;
+      color: #3b4251;
+      margin-bottom: 16px;
+      text-transform: none;
+    }
+    .col-text p { font-size: 15px; color: #666; line-height: 2; margin-bottom: 24px; }
+
+    .btn-green {
+      display: block;
+      background: #16bc35;
+      color: #fff;
+      font-family: 'Raleway', Arial, sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 16px 32px;
+      border-radius: 10px;
+      text-decoration: none;
+    }
+    .btn-green-inline {
+      display: inline-block;
+      background: #16bc35;
+      color: #fff;
+      font-family: 'Raleway', Arial, sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 14px 64px;
+      border-radius: 10px;
+      text-decoration: none;
+    }
+
+    /* ── Benefits ── */
+    .benefits-heading { background: #fff; padding: 48px 24px 0; }
+    .benefits-heading .inner { max-width: 1140px; margin: 0 auto; text-align: center; }
+    .benefits-heading h2 { font-size: 24px; font-weight: 700; text-transform: none; }
+
+    .benefits-grid { background: #fff; padding: 24px 24px 0; }
+    .benefits-grid .inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+    }
+    .benefit-item { display: flex; align-items: flex-start; gap: 20px; padding: 16px 0; }
+    .benefit-item img { width: 140px; height: 140px; flex-shrink: 0; }
+    .benefit-item .text { padding-top: 8px; }
+    .benefit-item h3 { font-size: 24px; text-transform: uppercase; margin-bottom: 8px; }
+    .benefit-item p { font-size: 14px; color: #666; line-height: 1.7; margin: 0; }
+
+    /* ── CTA button row ── */
+    .cta-row { background: #fff; padding: 40px 24px 48px; text-align: center; }
+
+    /* ── Footer ── */
+    footer { background: #2b313c; border-top: 4px solid #16bc35; }
+    .footer-banner {
+      padding: 32px 24px;
+      text-align: center;
+      border-bottom: 1px solid #3b4251;
+    }
+    .footer-banner p {
+      font-family: 'Raleway', Arial, sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 0;
+      line-height: 1.5;
+    }
+    .footer-inner { max-width: 1140px; margin: 0 auto; padding: 32px 24px; }
+    .footer-legal { font-size: 9px; color: #888; line-height: 1.8; margin-bottom: 24px; }
+    .footer-legal a { color: #16bc35; }
+    .footer-contacts {
+      display: flex;
+      gap: 48px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+      padding-top: 16px;
+      border-top: 1px solid #3b4251;
+    }
+    .footer-contacts .label {
+      font-family: 'Raleway', Arial, sans-serif;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+      font-size: 9px;
+    }
+    .footer-contacts .label-lg { font-size: 14px; }
+    .footer-contacts p { color: #888; font-size: 9px; margin: 0; }
+    .footer-contacts a { color: #16bc35; font-size: 9px; }
+    .footer-copy {
+      border-top: 1px solid #3b4251;
+      padding-top: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: #666;
+    }
+    .footer-copy p { margin: 0 0 4px; }
+    .footer-copy a { color: #16bc35; }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-logo">
+      <img src="public/logo-full.png" alt="Car Accident Help – Maximize Your Auto Accident Payout" />
+    </div>
+    <h1>Injured in an Accident?</h1>
+    <p>
+      Connect With <span class="accent">Top Car Accident Lawyers</span>
+      Who Fight to <strong style="text-decoration:underline">Maximize Your Payout</strong>
+    </p>
+  </section>
+
+  <!-- FORM SECTION -->
+  <section class="form-section" id="form-section">
+    <div class="inner">
+
+      <div class="form-card-top">
+        <p>Use our <strong>Free Compensation Calculator</strong> to See What You Qualify For</p>
+      </div>
+
+      <div id="growform-wrapper"></div>
+
+      <div class="form-card-bottom"></div>
+
+      <div class="three-col">
+        <div class="col-car">
+          <img src="public/accident-car.webp" alt="Car accident scene" />
+        </div>
+        <div class="col-spacer"></div>
+        <div class="col-text">
+          <h2>
+            Try Our Compensation <span class="accent">Calculator</span> And See How
+            Much You Could Get For Compensation
+          </h2>
+          <p>
+            Our car accident lawyers <em>use</em> this Compensation Calculator to get a clear idea of
+            how much our clients could be entitled for compensation for their accidents.
+            Try it today for <strong style="color:#3b4251">free</strong>, and get an answer within minutes!
+          </p>
+          <a href="#form-section" class="btn-green">See If You Qualify</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- BENEFITS HEADING -->
+  <section class="benefits-heading">
+    <div class="inner">
+      <h2>
+        Our Car Accident Lawyers Can Help <span style="text-decoration:underline">You</span>
+        Get Compensation For&hellip;
+      </h2>
+    </div>
+  </section>
+
+  <!-- BENEFITS GRID -->
+  <section class="benefits-grid">
+    <div class="inner">
+
+      <div class="benefit-item">
+        <img src="public/icon-medical.webp" alt="Medical Expenses" />
+        <div class="text">
+          <h3>Medical Expenses</h3>
+          <p>Covers treatment costs related to accident injuries.</p>
+        </div>
+      </div>
+
+      <div class="benefit-item">
+        <img src="public/icon-wages.webp" alt="Lost Wages" />
+        <div class="text">
+          <h3>Lost Wages</h3>
+          <p>You may be compensated if your injuries affected your ability to work.</p>
+        </div>
+      </div>
+
+      <div class="benefit-item">
+        <img src="public/icon-vehicle.webp" alt="Vehicle Damage" />
+        <div class="text">
+          <h3>Vehicle Damage</h3>
+          <p>Helps cover repairs or replacement of your vehicle.</p>
+        </div>
+      </div>
+
+      <div class="benefit-item">
+        <img src="public/icon-pain.webp" alt="Pain &amp; Suffering" />
+        <div class="text">
+          <h3>Pain &amp; Suffering</h3>
+          <p>May include physical or emotional distress caused by the car accident.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CTA ROW -->
+  <section class="cta-row">
+    <a href="#form-section" class="btn-green-inline">See If You Qualify</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-banner">
+      <p>Don't Wait &ndash; Get The Help You Deserve Today. It's Fast and Easy to Start.</p>
+    </div>
+    <div class="footer-inner">
+
+      <p class="footer-legal">
+        Advertising paid for by participating attorneys in a joint advertising program,
+        including West Coast Trial Lawyers, licensed to practice law in California.
+        A complete list of joint advertising attorneys can be found at
+        <a href="https://www.caraccidenthelp.net/sponsors/">https://www.caraccidenthelp.net/sponsors/</a>.
+        You can request an attorney by name. CarAccidenthelp.net is not a law firm or an attorney
+        referral service. This advertisement is not legal advice and is not a guarantee or
+        prediction of the outcome of your legal matter. Every case is different. The outcome
+        depends on the laws, facts, and circumstances unique to each case. Hiring an attorney
+        is an important decision that should not be based solely on advertising. Request free
+        information about your attorney's background and experience. This advertising does not
+        imply a higher quality of legal services than that provided by other attorneys. We do
+        not provide legal advice or legal representation. No attorney-client relationship is
+        formed by contacting us.
+      </p>
+
+      <div class="footer-contacts">
+        <div>
+          <p class="label">Address:</p>
+          <p>6119 Greenville #424, Dallas, TX 75206</p>
+        </div>
+        <div>
+          <p class="label label-lg">Phone:</p>
+          <a href="tel:+12543584941">+1 254-358-4941</a>
+        </div>
+        <div>
+          <p class="label label-lg">Email:</p>
+          <a href="mailto:support@caraccidenthelp.net">support@caraccidenthelp.net</a>
+        </div>
+      </div>
+
+      <div class="footer-copy">
+        <p>Car Accident Help is a brand owned and operated by Triggerfish Leads, LLC.</p>
+        <p>
+          &copy; 2012&ndash;2026 &nbsp;CarAccidentHelp.net &nbsp;&mdash;&nbsp;
+          All Rights Reserved &nbsp;&mdash;&nbsp; Get the Compensation You Deserve Today &nbsp;&mdash;&nbsp;
+          <a href="https://saddlebrown-nightingale-345621.hostingersite.com/terms/">Terms &amp; Conditions.</a>
+          &nbsp;
+          <a href="https://saddlebrown-nightingale-345621.hostingersite.com/privacy-policy/">Privacy Policy</a>
+          &nbsp;&mdash;&nbsp; Created by <a href="https://carlosaragon.online">Carlos Aragon</a>
+        </p>
+      </div>
+
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var wrapper = document.getElementById('growform-wrapper');
+      if (!wrapper) return;
+      var observer = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) {
+          var script = document.createElement('script');
+          script.type = 'text/javascript';
+          script.src = 'https://embed.growform.co/client/67cf74bca2ec54000b491be6';
+          wrapper.appendChild(script);
+          observer.disconnect();
+        }
+      }, { rootMargin: '300px' });
+      observer.observe(wrapper);
+    })();
+  </script>
+
+</body>
+</html>

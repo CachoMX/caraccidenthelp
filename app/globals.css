@@ -3,8 +3,8 @@
 }
 
 :root {
-  --color-red: #bc1616;
-  --color-red-hover: #a81313;
+  --color-green: #16bc35;
+  --color-green-hover: #13a82e;
   --color-dark: #2b313c;
   --color-dark2: #3b4251;
   --color-text: #666666;
@@ -36,9 +36,9 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.4;
 }
 
-.btn-red {
+.btn-green {
   display: inline-block;
-  background-color: var(--color-red);
+  background-color: var(--color-green);
   color: #fff;
   font-family: var(--font-heading), Arial, Helvetica, sans-serif;
   font-weight: 700;
@@ -51,8 +51,8 @@ h1, h2, h3, h4, h5, h6 {
   transition: background-color 0.2s;
   cursor: pointer;
 }
-.btn-red:hover {
-  background-color: var(--color-red-hover);
+.btn-green:hover {
+  background-color: var(--color-green-hover);
 }
 
 /* Growform embed — fixed height prevents CLS */
