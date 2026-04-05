@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +10,7 @@
 
   <!-- Preload critical assets -->
   <link rel="preload" as="image" href="public/hero-bg-full.webp" fetchpriority="high">
-  <link rel="preload" as="image" href="public/logo-full.png" fetchpriority="high">
+  <link rel="preload" as="image" href="public/logo-full.webp" fetchpriority="high">
 
   <!-- Google Fonts — async (non-render-blocking) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,9 +19,6 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;800&family=Open+Sans:wght@400;500;600&family=Poppins:wght@400;500;600;700&family=Abel&display=swap" media="print" onload="this.media='all'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;800&family=Open+Sans:wght@400;500;600&family=Poppins:wght@400;500;600;700&family=Abel&display=swap"></noscript>
 
-  <!-- GA4 -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6R1MVMNV9P"></script>
-  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-6R1MVMNV9P');</script>
 
   <style>
     *, *::before, *::after { box-sizing: border-box; }
@@ -82,16 +80,16 @@
     .footer-banner { padding: 32px 24px; text-align: center; border-bottom: 1px solid #3b4251; }
     .footer-banner p { font-family: 'Raleway', Arial, sans-serif; font-weight: 700; font-size: 18px; color: #fff; text-transform: uppercase; letter-spacing: 0.05em; margin: 0; line-height: 1.5; }
     .footer-inner { max-width: 1140px; margin: 0 auto; padding: 32px 24px; }
-    .footer-legal { font-size: 9px; color: #888; line-height: 1.8; margin-bottom: 24px; }
-    .footer-legal a { color: #16bc35; }
+    .footer-legal { font-size: 9px; color: #bbb; line-height: 1.8; margin-bottom: 24px; }
+    .footer-legal a { color: #4ade80; }
     .footer-contacts { display: flex; gap: 48px; flex-wrap: wrap; margin-bottom: 24px; padding-top: 16px; border-top: 1px solid #3b4251; }
     .footer-contacts .label { font-family: 'Raleway', Arial, sans-serif; font-weight: 700; color: #fff; margin-bottom: 4px; font-size: 9px; }
     .footer-contacts .label-lg { font-size: 14px; }
-    .footer-contacts p { color: #888; font-size: 9px; margin: 0; }
-    .footer-contacts a { color: #16bc35; font-size: 9px; }
-    .footer-copy { border-top: 1px solid #3b4251; padding-top: 20px; text-align: center; font-size: 12px; color: #666; }
+    .footer-contacts p { color: #bbb; font-size: 9px; margin: 0; }
+    .footer-contacts a { color: #4ade80; font-size: 9px; }
+    .footer-copy { border-top: 1px solid #3b4251; padding-top: 20px; text-align: center; font-size: 12px; color: #bbb; }
     .footer-copy p { margin: 0 0 4px; }
-    .footer-copy a { color: #16bc35; }
+    .footer-copy a { color: #4ade80; }
 
     /* ════════════════════════════════════════════
        CUSTOM FORM STYLES (scoped to #growform-wrapper)
@@ -159,10 +157,11 @@
 </head>
 <body>
 
+  <main>
   <!-- HERO -->
   <section class="hero">
     <div class="hero-logo">
-      <img src="public/logo-full.png" alt="Car Accident Help – Maximize Your Auto Accident Payout" width="220" height="66" fetchpriority="high">
+      <img src="public/logo-full.webp" alt="Car Accident Help logo" width="220" height="66" fetchpriority="high">
     </div>
     <h1>Injured in an Accident?</h1>
     <p>Connect With <span class="accent">Top Car Accident Lawyers</span> Who Fight to <strong style="text-decoration:underline">Maximize Your Payout</strong></p>
@@ -189,31 +188,31 @@
           <div class="rt-wrap">
             <button class="rt-btn" data-value="car_accident" onclick="gfPickRt(this,'serviceType')">
               <span class="rt-ind"></span>
-              <img src="https://res.cloudinary.com/dqnjggegp/image/upload/v1745617533/uploads/wgu06pexmrztdui4afct.png" alt="Car Accident" width="48" height="48">Car Accident
+              <img src="https://res.cloudinary.com/dqnjggegp/image/upload/w_100,h_100,c_scale,f_webp/v1745617533/uploads/wgu06pexmrztdui4afct.png" alt="Car Accident" width="48" height="48">Car Accident
             </button>
             <button class="rt-btn" data-value="motorcycle_accident" onclick="gfPickRt(this,'serviceType')">
               <span class="rt-ind"></span>
-              <img src="https://res.cloudinary.com/dqnjggegp/image/upload/v1741652009/uploads/qdhseno1gshf5nrrfjtd.png" alt="Motorcycle Accident" width="48" height="48">Motorcycle Accident
+              <img src="https://res.cloudinary.com/dqnjggegp/image/upload/w_100,h_100,c_scale,f_webp/v1741652009/uploads/qdhseno1gshf5nrrfjtd.png" alt="Motorcycle Accident" width="48" height="48">Motorcycle Accident
             </button>
             <button class="rt-btn" data-value="trucking_accident" onclick="gfPickRt(this,'serviceType')">
               <span class="rt-ind"></span>
-              <img src="https://res.cloudinary.com/dqnjggegp/image/upload/v1741652067/uploads/qh4caqfgi4hi2cds0gys.png" alt="Trucking Accident" width="48" height="48">Trucking Accident
+              <img src="https://res.cloudinary.com/dqnjggegp/image/upload/w_100,h_100,c_scale,f_webp/v1741652067/uploads/qh4caqfgi4hi2cds0gys.png" alt="Trucking Accident" width="48" height="48">Trucking Accident
             </button>
             <button class="rt-btn" data-value="bicycle_accident" onclick="gfPickRt(this,'serviceType')">
               <span class="rt-ind"></span>
-              <img src="https://res.cloudinary.com/dqnjggegp/image/upload/v1741651944/uploads/ppnamg5ex8yrnaibiyly.png" alt="Bicycle Accident" width="48" height="48">Bicycle or E-bike Accident
+              <img src="https://res.cloudinary.com/dqnjggegp/image/upload/w_100,h_100,c_scale,f_webp/v1741651944/uploads/ppnamg5ex8yrnaibiyly.png" alt="Bicycle Accident" width="48" height="48">Bicycle or E-bike Accident
             </button>
             <button class="rt-btn" data-value="work_accident" onclick="gfPickRt(this,'serviceType')">
               <span class="rt-ind"></span>
-              <img src="https://res.cloudinary.com/dqnjggegp/image/upload/v1741639090/uploads/bsq23vc11ngyecpvleo6.png" alt="Work Accident" width="48" height="48">Accident or Injury at Work
+              <img src="https://res.cloudinary.com/dqnjggegp/image/upload/w_100,h_100,c_scale,f_webp/v1741639090/uploads/bsq23vc11ngyecpvleo6.png" alt="Work Accident" width="48" height="48">Accident or Injury at Work
             </button>
             <button class="rt-btn" data-value="pedestrian_accident" onclick="gfPickRt(this,'serviceType')">
               <span class="rt-ind"></span>
-              <img src="https://res.cloudinary.com/dqnjggegp/image/upload/v1741652033/uploads/nqxtvuo9fs9pmdfbpbmj.png" alt="Pedestrian Accident" width="48" height="48">Pedestrian Accident
+              <img src="https://res.cloudinary.com/dqnjggegp/image/upload/w_100,h_100,c_scale,f_webp/v1741652033/uploads/nqxtvuo9fs9pmdfbpbmj.png" alt="Pedestrian Accident" width="48" height="48">Pedestrian Accident
             </button>
             <button class="rt-btn" data-value="other_accident" onclick="gfPickRt(this,'serviceType')">
               <span class="rt-ind"></span>
-              <img src="https://res.cloudinary.com/dqnjggegp/image/upload/v1741652233/uploads/cifeuqfgxcgvffsj4ip9.png" alt="Other Accident" width="48" height="48">Other Accident
+              <img src="https://res.cloudinary.com/dqnjggegp/image/upload/w_100,h_100,c_scale,f_webp/v1741652233/uploads/cifeuqfgxcgvffsj4ip9.png" alt="Other Accident" width="48" height="48">Other Accident
             </button>
           </div>
           <div class="gf-err" id="gf-err-1">Please select an option to continue.</div>
@@ -224,11 +223,11 @@
           <div class="sq-wrap">
             <button class="sq-btn" data-value="not_yet" onclick="gfPickSq(this,'attorney')">
               <span class="sq-ind"></span>
-              <img src="https://res.cloudinary.com/dqnjggegp/image/upload/v1745597547/uploads/ikvygtiyxr7e99mjl0yo.png" alt="Not Yet" width="66" height="66">Not Yet
+              <img src="https://res.cloudinary.com/dqnjggegp/image/upload/w_140,h_140,c_scale,f_webp/v1745597547/uploads/ikvygtiyxr7e99mjl0yo.png" alt="Not Yet" width="66" height="66">Not Yet
             </button>
             <button class="sq-btn" data-value="has_attorney" onclick="gfPickSq(this,'attorney')">
               <span class="sq-ind"></span>
-              <img src="https://res.cloudinary.com/dqnjggegp/image/upload/v1745281414/uploads/ec5qlo5n3rbjdgarbzgc.png" alt="I Have An Attorney" width="66" height="66">I Have An Attorney
+              <img src="https://res.cloudinary.com/dqnjggegp/image/upload/w_140,h_140,c_scale,f_webp/v1745281414/uploads/ec5qlo5n3rbjdgarbzgc.png" alt="I Have An Attorney" width="66" height="66">I Have An Attorney
             </button>
           </div>
           <p class="gf-helper">If Unsure: Select "Not Yet"</p>
@@ -242,11 +241,11 @@
           <div class="sq-wrap">
             <button class="sq-btn" data-value="no" onclick="gfPickSq(this,'fault')">
               <span class="sq-ind"></span>
-              <img src="https://res.cloudinary.com/dqnjggegp/image/upload/v1745597625/uploads/dkxgckb2fi46si0afyiw.png" alt="No" width="66" height="66">No
+              <img src="https://res.cloudinary.com/dqnjggegp/image/upload/w_140,h_140,c_scale,f_webp/v1745597625/uploads/dkxgckb2fi46si0afyiw.png" alt="No" width="66" height="66">No
             </button>
             <button class="sq-btn" data-value="yes" onclick="gfPickSq(this,'fault')">
               <span class="sq-ind"></span>
-              <img src="https://res.cloudinary.com/dqnjggegp/image/upload/v1745279973/uploads/zvle3k42p3twuixc2sk7.png" alt="Yes" width="66" height="66">Yes
+              <img src="https://res.cloudinary.com/dqnjggegp/image/upload/w_140,h_140,c_scale,f_webp/v1745279973/uploads/zvle3k42p3twuixc2sk7.png" alt="Yes" width="66" height="66">Yes
             </button>
           </div>
           <p class="gf-helper">If Unsure: Select "No"</p>
@@ -259,11 +258,11 @@
           <div class="sq-wrap">
             <button class="sq-btn" data-value="yes" onclick="gfPickSq(this,'injury')">
               <span class="sq-ind"></span>
-              <img src="https://res.cloudinary.com/dqnjggegp/image/upload/v1745885697/uploads/njqsohnifjmtnpui5mx7.png" alt="Yes" width="66" height="66">Yes
+              <img src="https://res.cloudinary.com/dqnjggegp/image/upload/w_140,h_140,c_scale,f_webp/v1745885697/uploads/njqsohnifjmtnpui5mx7.png" alt="Yes" width="66" height="66">Yes
             </button>
             <button class="sq-btn" data-value="no" onclick="gfPickSq(this,'injury')">
               <span class="sq-ind"></span>
-              <img src="https://res.cloudinary.com/dqnjggegp/image/upload/v1745597950/uploads/i325zocmoxuiquwh1i4f.png" alt="No" width="66" height="66">No
+              <img src="https://res.cloudinary.com/dqnjggegp/image/upload/w_140,h_140,c_scale,f_webp/v1745597950/uploads/i325zocmoxuiquwh1i4f.png" alt="No" width="66" height="66">No
             </button>
           </div>
           <div class="gf-err" id="gf-err-4">Please select an option to continue.</div>
@@ -346,11 +345,11 @@
           <div class="sq-wrap">
             <button class="sq-btn" data-value="yes" onclick="gfPickSq(this,'insured')">
               <span class="sq-ind"></span>
-              <img src="https://res.cloudinary.com/dqnjggegp/image/upload/v1745597625/uploads/dkxgckb2fi46si0afyiw.png" alt="Yes">Yes
+              <img src="https://res.cloudinary.com/dqnjggegp/image/upload/w_140,h_140,c_scale,f_webp/v1745597625/uploads/dkxgckb2fi46si0afyiw.png" alt="Yes">Yes
             </button>
             <button class="sq-btn" data-value="no" onclick="gfPickSq(this,'insured')">
               <span class="sq-ind"></span>
-              <img src="https://res.cloudinary.com/dqnjggegp/image/upload/v1745279973/uploads/zvle3k42p3twuixc2sk7.png" alt="No">No
+              <img src="https://res.cloudinary.com/dqnjggegp/image/upload/w_140,h_140,c_scale,f_webp/v1745279973/uploads/zvle3k42p3twuixc2sk7.png" alt="No">No
             </button>
           </div>
           <div class="gf-nav"><button class="gf-back" onclick="gfPrev()">BACK</button></div>
@@ -485,6 +484,7 @@
   <section class="cta-row">
     <a href="#form-section" class="btn-green-inline">See If You Qualify</a>
   </section>
+  </main>
   <!-- FOOTER -->
   <footer>
     <div class="footer-banner">
