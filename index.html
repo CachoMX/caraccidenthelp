@@ -652,9 +652,21 @@ function gfPrevStepNum(cur) {
   return prev;
 }
 
+// ── Track step completion via GTM dataLayer ──────────────────
+function gfTrackStep(stepNumber) {
+  if (window.dataLayer) {
+    window.dataLayer.push({
+      event: 'growformCompletedStep',
+      stepNumber: stepNumber,
+      formId: '67cf74bca2ec54000b491be6'
+    });
+  }
+}
+
 // ── Advance (called after auto-pick or NEXT button) ───────────
 function gfAdvance() {
   if (!gfValidate(gfCurStep)) return;
+  gfTrackStep(gfCurStep);
   var next = gfNextStepNum(gfCurStep);
   if (next > TOTAL_STEPS) { gfSubmit(); return; }
   gfShowStep(next);
@@ -767,7 +779,8 @@ function gfSubmit() {
   document.getElementById('gf-complete').classList.add('active');
   document.getElementById('gfProgressBar').style.width = '100%';
 
-  // Fire GTM event
+  // Fire GTM events
+  gfTrackStep(TOTAL_STEPS);
   if (window.dataLayer) {
     window.dataLayer.push({ event: 'form_submit', service_type: gfd.serviceType, state: gfd.state });
   }
