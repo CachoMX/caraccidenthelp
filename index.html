@@ -653,14 +653,35 @@ function gfPrevStepNum(cur) {
 }
 
 // ── Track step completion via GTM dataLayer ──────────────────
+// Replicates Growform's exact dataLayer format so existing GTM triggers fire
+var GF_STEP_BUTTON_TEXT = {
+  1: function(){ return GF_LABELS.serviceType[gfd.serviceType]    || gfd.serviceType; },
+  2: function(){ return GF_LABELS.attorney[gfd.attorney]          || gfd.attorney; },
+  3: function(){ return GF_LABELS.fault[gfd.fault]                || gfd.fault; },
+  4: function(){ return GF_LABELS.injury[gfd.injury]              || gfd.injury; },
+  5: function(){ return GF_LABELS.accidentHappen[gfd.accidentHappen] || gfd.accidentHappen; },
+  6: function(){ return gfd.stateText; },
+  7: function(){ return gfd.zipcode; },
+  8: function(){ return GF_LABELS.insured[gfd.insured]            || gfd.insured; },
+  9: function(){ return gfd.describe; },
+  10: function(){ return gfd.firstName + ' ' + gfd.lastName; },
+  11: function(){ return gfd.email; },
+  12: function(){ return gfd.phone; }
+};
+
 function gfTrackStep(stepNumber) {
-  if (window.dataLayer) {
-    window.dataLayer.push({
-      event: 'growformCompletedStep',
-      stepNumber: stepNumber,
-      formId: '67cf74bca2ec54000b491be6'
-    });
-  }
+  if (!window.dataLayer) return;
+  var buttonText = GF_STEP_BUTTON_TEXT[stepNumber] ? GF_STEP_BUTTON_TEXT[stepNumber]() : '';
+  window.dataLayer.push({
+    event:            'growformIframe.growformStepCompleted',
+    grow_step:        stepNumber,
+    grow_buttonText:  buttonText,
+    'dlv - email':    gfd.email,
+    'Growform Phone': gfd.phone.replace(/\D/g,''),
+    'dlv - lastname': gfd.lastName,
+    'Growform State': gfd.stateText ? gfd.stateText.toLowerCase() : '',
+    'dl-zipcode':     gfd.zipcode
+  });
 }
 
 // ── Advance (called after auto-pick or NEXT button) ───────────
