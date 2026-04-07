@@ -683,11 +683,21 @@ var gfUtms = (function() {
 
 function gfClientVars() {
   return {
+    // Contact info
     'dlv - email':             gfd.email,
-    'Growform Phone':          gfd.phone.replace(/\D/g,''),
+    'dlv - firstname':         gfd.firstName,
     'dlv - lastname':          gfd.lastName,
+    'Growform Phone':          gfd.phone.replace(/\D/g,''),
     'Growform State':          gfd.stateText ? gfd.stateText.toLowerCase() : '',
     'dl-zipcode':              gfd.zipcode,
+    // Form answers — persistent, accumulated across all steps
+    'dlv - service_type':      GF_LABELS.serviceType[gfd.serviceType]       || gfd.serviceType,
+    'dlv - attorney':          GF_LABELS.attorney[gfd.attorney]             || gfd.attorney,
+    'dlv - fault':             GF_LABELS.fault[gfd.fault]                   || gfd.fault,
+    'dlv - injury':            GF_LABELS.injury[gfd.injury]                 || gfd.injury,
+    'dlv - timeframe':         GF_LABELS.accidentHappen[gfd.accidentHappen] || gfd.accidentHappen,
+    'dlv - insured':           GF_LABELS.insured[gfd.insured]               || gfd.insured,
+    // Step info
     'dlv - form_step_number':  gfCurStep,
     'dlv - form_step_name':    GF_STEP_META[gfCurStep] ? GF_STEP_META[gfCurStep].name : '',
     'utm_source':              gfUtms.utm_source,
