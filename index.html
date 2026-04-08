@@ -883,9 +883,9 @@ function gfSubmit() {
   );
   var isDisqualified = (gfd.fault === 'no' && !isQualified);
   var redirectUrl = isQualified
-    ? 'https://caraccidenthelp.net/thank-you/?lead_stage=qualified-lead'
+    ? 'https://caraccidenthelp.net/thank-you/?lead_stage=qualified-lead&from_cah_form=1'
     : isDisqualified
-      ? 'https://caraccidenthelp.net/diminished-value-claim/?lead_stage=disqualified-lead'
+      ? 'https://caraccidenthelp.net/diminished-value-claim/?lead_stage=disqualified-lead&from_cah_form=1'
       : null;
 
   // Send to Make.com webhook, then redirect
