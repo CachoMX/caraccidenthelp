@@ -866,6 +866,7 @@ function gfSubmit() {
   // Fire GTM events
   gfTrackStep(TOTAL_STEPS);
   gfTrackCompleted();
+  sessionStorage.setItem('growformCompleted', 'true');
   if (window.dataLayer) {
     window.dataLayer.push({ event: 'form_submit', service_type: gfd.serviceType, state: gfd.state });
   }
