@@ -159,9 +159,10 @@
     #growform-wrapper .gf-err{color:#ff6b6b;font-size:13px;margin-top:6px;display:none;}
     #growform-wrapper .gf-err.show{display:block;}
     #growform-wrapper .gf-step-bar{padding:20px 100px 28px;background:#101828;}
-    #growform-wrapper .gf-step-bar-label{font-size:13px;color:rgba(255,255,255,.5);margin-bottom:8px;text-align:center;}
     #growform-wrapper .gf-step-bar-track{height:6px;background:rgba(255,255,255,.15);border-radius:3px;overflow:hidden;}
     #growform-wrapper .gf-step-bar-fill{height:100%;background:#225bc0;border-radius:3px;transition:width .4s ease;}
+    #growform-wrapper .gf-step-bar-back{margin-top:16px;}
+    #growform-wrapper .gf-nav .gf-back{display:none;}
     @media(max-width:600px){
       #growform-wrapper .gf-step{padding:20px 20px 30px;}
       #growform-wrapper .gf-complete{padding:40px 20px 60px;}
@@ -170,6 +171,7 @@
       #growform-wrapper .gf-h{font-size:31px;} #growform-wrapper .gf-h.sm{font-size:26px;}
       #growform-wrapper .rt-btn{font-size:18px;} #growform-wrapper .sq-btn{font-size:17px;}
       #growform-wrapper .gf-step-bar{padding:20px 20px 28px;}
+      #growform-wrapper .gf-nav .gf-back{display:none;}
       .benefits-grid .inner { grid-template-columns: 1fr; gap: 8px; }
       .benefit-item img { width: 80px; height: 80px; }
     }
@@ -187,7 +189,7 @@
       <img src="public/logo-full.webp" alt="Car Accident Help logo" width="220" height="66" fetchpriority="high">
     </div>
     <h1>Injured in an Accident?</h1>
-    <p class="hero-sub">Connect With <span class="accent">Top Car Accident Lawyers</span> Who Fight to <strong style="text-decoration:underline">Maximize Your Payout</strong></p>
+    <p class="hero-sub"><strong>Connect With <span class="accent">Top Car Accident Lawyers</span> Who Fight to <span style="text-decoration:underline">Maximize Your Payout</span></strong></p>
   </section>
 
   <!-- FORM SECTION -->
@@ -460,8 +462,10 @@
 
         <!-- STEP PROGRESS BAR -->
         <div class="gf-step-bar">
-          <div class="gf-step-bar-label">Step <span id="gfStepLabel">1</span> of 12</div>
           <div class="gf-step-bar-track"><div class="gf-step-bar-fill" id="gfStepBarFill" style="width:8%"></div></div>
+          <div class="gf-step-bar-back" id="gfBarBack">
+            <button class="gf-back" onclick="gfPrev()">BACK</button>
+          </div>
         </div>
 
       </div><!-- /gf-card -->
@@ -590,6 +594,8 @@ function gfShowStep(n) {
   if (el) el.classList.add('active');
   gfCurStep = n;
   gfUpdateProgress();
+  var barBack = document.getElementById('gfBarBack');
+  if (barBack) barBack.style.display = n > 1 ? 'block' : 'none';
 }
 
 // ── Radio-type button pick (rt-btn) — auto-advance ───────────
@@ -920,6 +926,8 @@ function gfSubmit() {
     gfd.stateText = 'Arizona';
   }
   gfUpdateProgress();
+  var barBack = document.getElementById('gfBarBack');
+  if (barBack) barBack.style.display = 'none';
 })();
 </script>
 
