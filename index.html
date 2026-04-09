@@ -45,15 +45,15 @@
     }
     .hero-logo { margin-bottom: 24px; }
     .hero-logo img { height: 66px; width: auto; display: inline-block; }
-    .hero h1 { font-size: 28px; font-weight: 700; color: #fff; margin: 0 0 20px; }
+    .hero h1 { font-size: 34px; font-weight: 700; color: #fff; margin: 0 0 20px; }
     .hero p { font-family: 'Raleway', Arial, sans-serif; font-weight: 600; font-size: 20px; color: #fff; margin: 0; line-height: 1.5; }
     .hero .accent { color: #16bc35; }
-    @media(max-width:768px){ .hero-sub { display: none; } .hide-mobile { display: none; } }
+    @media(max-width:768px){ .hero-sub { display: none; } .hide-mobile { display: none; } .hero h1 { font-size: 28px; } .form-card-top { padding: 7px 5px; } }
 
     /* ── Form section ── */
     .form-section { background: #fff; padding: 32px 24px 0; }
     .form-section .inner { max-width: 1140px; margin: 0 auto; }
-    .form-card-top { background: #e2e2e2; border-radius: 28px 28px 0 0; padding: 7px 5px; text-align: center; }
+    .form-card-top { background: #e2e2e2; border-radius: 28px 28px 0 0; padding: 28px 48px; text-align: center; }
     .form-card-top p { font-family: 'Raleway', Arial, sans-serif; font-weight: 400; font-size: 35px; color: #003954; margin: 0; line-height: 1.5; }
     #growform-wrapper { width: 100%; line-height: 1; font-size: 15px; }
     .form-card-bottom { background: #e2e2e2; border-radius: 0 0 28px 28px; padding: 28px 48px; margin-top: -16px; margin-bottom: 36px; }
@@ -158,6 +158,10 @@
     #growform-wrapper .gf-next:hover{background:#0090e0;}
     #growform-wrapper .gf-err{color:#ff6b6b;font-size:13px;margin-top:6px;display:none;}
     #growform-wrapper .gf-err.show{display:block;}
+    #growform-wrapper .gf-step-bar{padding:20px 100px 28px;background:#101828;}
+    #growform-wrapper .gf-step-bar-label{font-size:13px;color:rgba(255,255,255,.5);margin-bottom:8px;text-align:center;}
+    #growform-wrapper .gf-step-bar-track{height:6px;background:rgba(255,255,255,.15);border-radius:3px;overflow:hidden;}
+    #growform-wrapper .gf-step-bar-fill{height:100%;background:#225bc0;border-radius:3px;transition:width .4s ease;}
     @media(max-width:600px){
       #growform-wrapper .gf-step{padding:20px 20px 30px;}
       #growform-wrapper .gf-complete{padding:40px 20px 60px;}
@@ -165,6 +169,7 @@
       #growform-wrapper .gf-name-row{grid-template-columns:1fr;}
       #growform-wrapper .gf-h{font-size:31px;} #growform-wrapper .gf-h.sm{font-size:26px;}
       #growform-wrapper .rt-btn{font-size:18px;} #growform-wrapper .sq-btn{font-size:17px;}
+      #growform-wrapper .gf-step-bar{padding:20px 20px 28px;}
       .benefits-grid .inner { grid-template-columns: 1fr; gap: 8px; }
       .benefit-item img { width: 80px; height: 80px; }
     }
@@ -453,6 +458,12 @@
           <p style="font-size:17px;color:rgba(255,255,255,.7);">Thanks for getting in touch. We'll be in contact soon with more information about timelines and availability.</p>
         </div>
 
+        <!-- STEP PROGRESS BAR -->
+        <div class="gf-step-bar">
+          <div class="gf-step-bar-label">Step <span id="gfStepLabel">1</span> of 12</div>
+          <div class="gf-step-bar-track"><div class="gf-step-bar-fill" id="gfStepBarFill" style="width:8%"></div></div>
+        </div>
+
       </div><!-- /gf-card -->
       </div><!-- /growform-wrapper -->
       <!-- ══ END CUSTOM FORM ══ -->
@@ -566,8 +577,10 @@ function gfSkipStateStep() {
 
 // ── Progress bar ─────────────────────────────────────────────
 function gfUpdateProgress() {
-  var pct = Math.round(((gfCurStep - 1) / TOTAL_STEPS) * 100);
+  var pct = Math.round((gfCurStep / TOTAL_STEPS) * 100);
   document.getElementById('gfProgressBar').style.width = pct + '%';
+  document.getElementById('gfStepBarFill').style.width = pct + '%';
+  document.getElementById('gfStepLabel').textContent = gfCurStep;
 }
 
 // ── Show a step ───────────────────────────────────────────────
