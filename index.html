@@ -47,6 +47,7 @@
     .hero h1 { font-size: 34px; font-weight: 700; color: #fff; margin: 0 0 20px; }
     .hero p { font-family: 'Raleway', Arial, sans-serif; font-weight: 600; font-size: 20px; color: #fff; margin: 0; line-height: 1.5; }
     .hero .accent { color: #16bc35; }
+    @media(max-width:600px){ .hero-sub { display: none; } .hide-mobile { display: none; } }
 
     /* ── Form section ── */
     .form-section { background: #fff; padding: 32px 24px 0; }
@@ -180,7 +181,7 @@
       <img src="public/logo-full.webp" alt="Car Accident Help logo" width="220" height="66" fetchpriority="high">
     </div>
     <h1>Injured in an Accident?</h1>
-    <p>Connect With <span class="accent">Top Car Accident Lawyers</span> Who Fight to <strong style="text-decoration:underline">Maximize Your Payout</strong></p>
+    <p class="hero-sub">Connect With <span class="accent">Top Car Accident Lawyers</span> Who Fight to <strong style="text-decoration:underline">Maximize Your Payout</strong></p>
   </section>
 
   <!-- FORM SECTION -->
@@ -188,7 +189,7 @@
     <div class="inner">
 
       <div class="form-card-top">
-        <p>Use our <strong>Free Compensation Calculator</strong> to See What You Qualify For</p>
+        <p><span class="hide-mobile">Use our <strong>Free Compensation Calculator</strong> to </span>See What Compensation You Qualify For</p>
       </div>
 
       <!-- TrustedForm needs a <form> element to inject cert URL -->
