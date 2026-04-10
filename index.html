@@ -853,7 +853,7 @@ function gfBuildPayload() {
         text_921418548778799:             { type:'Text',          label:'First name',                           step:'a3521f07443c3a05b36140a5', value: gfd.firstName },
         text_168309131262000:             { type:'Text',          label:'Last name',                            step:'a3521f07443c3a05b36140a5', value: gfd.lastName },
         email_213868147356228:            { type:'Email',         label:'What is your email address?',          step:'fe5ec8504219f1b6c4e59be5', value: gfd.email },
-        phone_400747347981930:            { type:'Phone',         label:'What is your phone number?',           step:'1d50fdecb868a4b4b6fa9ead', value: (document.querySelector('.gf-phone-pre').textContent.match(/\+\d+/)||['+1'])[0] + gfd.phone.replace(/\D/g,'') },
+        phone_400747347981930:            { type:'Phone',         label:'What is your phone number?',           step:'1d50fdecb868a4b4b6fa9ead', value: '1' + gfd.phone.replace(/\D/g,'') },
         toscheckbox_687262995170288:      { type:'TOSCheckbox',   label:'TOS',                                  step:'1d50fdecb868a4b4b6fa9ead', value: 'true' },
         // UTM / hidden fields from URL params
         hidden_978002841632858:           { type:'Hidden', step:'acd45227cac332d443c4e1db', value: gfUtms.utm_source },
