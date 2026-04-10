@@ -585,7 +585,8 @@ function gfUpdateProgress() {
   var pct = Math.round((gfCurStep / TOTAL_STEPS) * 100);
   document.getElementById('gfProgressBar').style.width = pct + '%';
   document.getElementById('gfStepBarFill').style.width = pct + '%';
-  document.getElementById('gfStepLabel').textContent = gfCurStep;
+  var stepLabel = document.getElementById('gfStepLabel');
+  if (stepLabel) stepLabel.textContent = gfCurStep;
 }
 
 // ── Show a step ───────────────────────────────────────────────
@@ -944,12 +945,12 @@ function gfSubmit() {
 
 // ── Auto-detect state from IP geolocation ────────────────────
 (function(){
-  if (gfSkipStateStep()) return; // already set via UTM
   fetch('https://ipapi.co/json/')
     .then(function(res){ return res.json(); })
     .then(function(data){
       console.log('IP Geolocation data:', data);
       if (!data.region || data.country_code !== 'US') return;
+      if (gfSkipStateStep()) return; // UTM already set state
       var sel = document.getElementById('gfStateSelect');
       if (!sel) return;
       var val = data.region.toLowerCase().replace(/\s+/g,'_');
