@@ -437,9 +437,10 @@
             <div class="gf-phone-wrap">
               <span class="gf-phone-pre">🇺🇸 +1</span>
               <input type="tel" id="gfPhone" placeholder="(555) 000-0000" maxlength="14"
-                     oninput="gfFmtPhone(this);gfd.phone=this.value;">
+                     oninput="gfFmtPhone(this);gfd.phone=this.value;gfValidatePhone();">
             </div>
             <div class="gf-err" id="gf-err-12a">Please enter a valid 10-digit phone number.</div>
+            <div class="gf-err" id="gf-err-phone-live" style="display:none;">Please enter a valid US phone number.</div>
           </div>
           <div class="gf-field" style="margin-top:14px;">
             <label class="gf-tos">
@@ -783,6 +784,17 @@ function gfPrev() {
 }
 
 // ── Phone formatter ───────────────────────────────────────────
+function gfValidatePhone() {
+  var digits = gfd.phone.replace(/\D/g,'');
+  var err = document.getElementById('gf-err-phone-live');
+  if (!err) return;
+  if (digits.length === 10 && (/^[01]/.test(digits) || /^(\d)\1{9}$/.test(digits))) {
+    err.style.display = 'block';
+  } else {
+    err.style.display = 'none';
+  }
+}
+
 function gfFmtPhone(input) {
   var v = input.value.replace(/\D/g, '').slice(0, 10);
   if (v.length >= 7)      v = '(' + v.slice(0,3) + ') ' + v.slice(3,6) + '-' + v.slice(6);
@@ -828,7 +840,7 @@ function gfBuildPayload() {
         text_921418548778799:             { type:'Text',          label:'First name',                           step:'a3521f07443c3a05b36140a5', value: gfd.firstName },
         text_168309131262000:             { type:'Text',          label:'Last name',                            step:'a3521f07443c3a05b36140a5', value: gfd.lastName },
         email_213868147356228:            { type:'Email',         label:'What is your email address?',          step:'fe5ec8504219f1b6c4e59be5', value: gfd.email },
-        phone_400747347981930:            { type:'Phone',         label:'What is your phone number?',           step:'1d50fdecb868a4b4b6fa9ead', value: gfd.phone.replace(/\D/g,'') },
+        phone_400747347981930:            { type:'Phone',         label:'What is your phone number?',           step:'1d50fdecb868a4b4b6fa9ead', value: '+1' + gfd.phone.replace(/\D/g,'') },
         toscheckbox_687262995170288:      { type:'TOSCheckbox',   label:'TOS',                                  step:'1d50fdecb868a4b4b6fa9ead', value: 'true' },
         // UTM / hidden fields from URL params
         hidden_978002841632858:           { type:'Hidden', step:'acd45227cac332d443c4e1db', value: gfUtms.utm_source },
@@ -867,7 +879,7 @@ function gfBuildPayload() {
 function gfSubmit() {
   var phoneDigits = gfd.phone.replace(/\D/g,'');
   var ok = true;
-  if (phoneDigits.length !== 10) {
+  if (phoneDigits.length !== 10 || /^(\d)\1{9}$/.test(phoneDigits) || /^0/.test(phoneDigits) || /^1/.test(phoneDigits)) {
     var e = document.getElementById('gf-err-12a');
     if (e) e.style.display = 'block';
     ok = false;
