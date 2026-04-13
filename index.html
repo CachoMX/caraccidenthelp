@@ -928,7 +928,7 @@ function gfSubmit() {
     QUALIFIED_SERVICES.indexOf(gfd.serviceType)     !== -1 &&
     QUALIFIED_TIMEFRAMES.indexOf(gfd.accidentHappen) !== -1
   );
-  var isDisqualified = (gfd.fault === 'no' && !isQualified);
+  var isDisqualified = !isQualified;
   var redirectUrl = isQualified
     ? 'https://caraccidenthelp.net/thank-you/?lead_stage=qualified-lead&from_cah_form=1'
     : isDisqualified
