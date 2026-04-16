@@ -149,15 +149,16 @@
     #growform-wrapper textarea.gf-input{resize:vertical;min-height:120px;}
     #growform-wrapper .gf-name-row{display:grid;grid-template-columns:1fr;gap:16px;}
     #growform-wrapper select.gf-input{appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23666' d='M6 8L0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;}
-    #growform-wrapper .gf-phone-wrap{display:block;border:1px solid #ccc;border-radius:8px;overflow:hidden;background:#fff;transition:border-color .2s;}
-    #growform-wrapper .gf-phone-wrap:focus-within{border-color:#0ea9ff;box-shadow:0 0 0 2px rgba(14,169,255,.2);}
+    #growform-wrapper .gf-phone-wrap{display:block;border-left:none;border-top:none;border-right:none;border-top-left-radius:3px;border-top-right-radius:3px;border-bottom:1px solid #909090;overflow:hidden;background:#fff;transition:border-color .2s;}
+    #growform-wrapper .gf-phone-wrap:focus-within{border-bottom-color:#0ea9ff;}
     #growform-wrapper .gf-phone-lbl{padding:10px 16px 2px;font-size:10.5px;color:#000;font-family:'Open Sans',sans-serif;}
     #growform-wrapper .gf-phone-row{display:flex;align-items:stretch;}
     #growform-wrapper .gf-phone-pre{padding:8px 12px;background:#f5f5f5;border-right:1px solid #ccc;border-top:1px solid #eee;font-size:14px;color:#555;display:flex;align-items:center;gap:4px;white-space:nowrap;}
-    #growform-wrapper .gf-phone-wrap input{border:none;flex:1;padding:8px 14px;font-size:16px;outline:none;font-family:'Open Sans',sans-serif;background:#fff;color:#000;}
+    #growform-wrapper .gf-phone-wrap input{border:none;flex:1;padding:6px 14px;font-size:16px;outline:none;font-family:'Open Sans',sans-serif;background:#fff;color:#000;}
     #growform-wrapper .gf-phone-wrap input::placeholder{color:#000;}
-    #growform-wrapper .gf-tos{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;color:rgba(255,255,255,.6);line-height:1.5;cursor:pointer;}
-    #growform-wrapper .gf-tos input[type="checkbox"]{margin-top:2px;width:16px;height:16px;flex-shrink:0;accent-color:#0ea9ff;}
+    #growform-wrapper .gf-tos{display:flex;gap:10px;align-items:center;font-size:12.5px;color:rgba(255,255,255,.6);line-height:1.5;cursor:pointer;}
+    #growform-wrapper .gf-tos input[type="checkbox"]{width:16px;height:16px;flex-shrink:0;appearance:none;-webkit-appearance:none;border:1.5px solid #fff;border-radius:3px;background:transparent;cursor:pointer;}
+    #growform-wrapper .gf-tos input[type="checkbox"]:checked{border-color:#0ea9ff;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath stroke='%230ea9ff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' fill='none' d='M3 8l3.5 3.5L13 4'/%3E%3C%2Fsvg%3E");}
     #growform-wrapper .gf-tos a{color:#0ea9ff;}
     #growform-wrapper .gf-nav{display:flex;gap:12px;margin-top:20px;}
     #growform-wrapper .gf-back{background:transparent;border:none;color:rgba(255,255,255,.6);font-family:'Abel',sans-serif;font-size:12px;padding:4px 0;cursor:pointer;transition:color .2s;letter-spacing:.5px;}
@@ -446,7 +447,7 @@
             <div class="gf-phone-wrap">
               <div class="gf-phone-lbl">What is your phone number?</div>
               <div class="gf-phone-row">
-                <span class="gf-phone-pre">🇺🇸 +1</span>
+                <span class="gf-phone-pre"><svg width="20" height="13" viewBox="0 0 20 13" xmlns="http://www.w3.org/2000/svg" style="border-radius:1px;vertical-align:middle;display:inline-block;margin-right:4px"><rect width="20" height="13" fill="#B22234"/><rect y="1" width="20" height="1" fill="#fff"/><rect y="3" width="20" height="1" fill="#fff"/><rect y="5" width="20" height="1" fill="#fff"/><rect y="7" width="20" height="1" fill="#fff"/><rect y="9" width="20" height="1" fill="#fff"/><rect y="11" width="20" height="1" fill="#fff"/><rect width="8" height="7" fill="#3C3B6E"/><circle cx="1.2" cy="1.2" r="0.35" fill="#fff"/><circle cx="2.4" cy="1.2" r="0.35" fill="#fff"/><circle cx="3.6" cy="1.2" r="0.35" fill="#fff"/><circle cx="4.8" cy="1.2" r="0.35" fill="#fff"/><circle cx="6" cy="1.2" r="0.35" fill="#fff"/><circle cx="7.2" cy="1.2" r="0.35" fill="#fff"/><circle cx="1.8" cy="2.33" r="0.35" fill="#fff"/><circle cx="3" cy="2.33" r="0.35" fill="#fff"/><circle cx="4.2" cy="2.33" r="0.35" fill="#fff"/><circle cx="5.4" cy="2.33" r="0.35" fill="#fff"/><circle cx="6.6" cy="2.33" r="0.35" fill="#fff"/><circle cx="1.2" cy="3.5" r="0.35" fill="#fff"/><circle cx="2.4" cy="3.5" r="0.35" fill="#fff"/><circle cx="3.6" cy="3.5" r="0.35" fill="#fff"/><circle cx="4.8" cy="3.5" r="0.35" fill="#fff"/><circle cx="6" cy="3.5" r="0.35" fill="#fff"/><circle cx="7.2" cy="3.5" r="0.35" fill="#fff"/><circle cx="1.8" cy="4.67" r="0.35" fill="#fff"/><circle cx="3" cy="4.67" r="0.35" fill="#fff"/><circle cx="4.2" cy="4.67" r="0.35" fill="#fff"/><circle cx="5.4" cy="4.67" r="0.35" fill="#fff"/><circle cx="6.6" cy="4.67" r="0.35" fill="#fff"/><circle cx="1.2" cy="5.83" r="0.35" fill="#fff"/><circle cx="2.4" cy="5.83" r="0.35" fill="#fff"/><circle cx="3.6" cy="5.83" r="0.35" fill="#fff"/><circle cx="4.8" cy="5.83" r="0.35" fill="#fff"/><circle cx="6" cy="5.83" r="0.35" fill="#fff"/><circle cx="7.2" cy="5.83" r="0.35" fill="#fff"/></svg></span>
                 <input type="tel" id="gfPhone" placeholder="(555) 000-0000" maxlength="14"
                        oninput="gfFmtPhone(this);gfd.phone=this.value;gfValidatePhone();">
               </div>
