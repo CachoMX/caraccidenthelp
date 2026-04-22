@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace VIXI\CahSplit\Admin;
 
+use VIXI\CahSplit\Repositories\LeadsRepository;
 use VIXI\CahSplit\Repositories\TestsRepository;
 use VIXI\CahSplit\Repositories\VariantsRepository;
 use VIXI\CahSplit\Settings;
@@ -25,6 +26,7 @@ final class Admin
         private readonly Settings $settings,
         private readonly TestsRepository $tests,
         private readonly VariantsRepository $variants,
+        private readonly LeadsRepository $leads,
     ) {
     }
 

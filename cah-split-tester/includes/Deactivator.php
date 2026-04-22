@@ -12,6 +12,7 @@ final class Deactivator
 {
     public static function deactivate(): void
     {
-        // Intentional no-op in Phase 1. Cron unscheduling and transient cleanup land with later phases.
+        Cron::unschedule();
+        \flush_rewrite_rules(false);
     }
 }

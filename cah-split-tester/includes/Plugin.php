@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace VIXI\CahSplit;
 
 use VIXI\CahSplit\Admin\Admin;
+use VIXI\CahSplit\Repositories\LeadsRepository;
+use VIXI\CahSplit\Repositories\PageviewsRepository;
 use VIXI\CahSplit\Repositories\TestsRepository;
 use VIXI\CahSplit\Repositories\VariantsRepository;
 
@@ -19,9 +21,15 @@ final class Plugin
     public readonly Settings $settings;
     public readonly TestsRepository $tests;
     public readonly VariantsRepository $variants;
+    public readonly LeadsRepository $leads;
+    public readonly PageviewsRepository $pageviews;
+    public readonly LeadStage $leadStage;
+    public readonly LeadPayloadParser $parser;
+    public readonly MakeForwarder $forwarder;
     public readonly VariantRenderer $variantRenderer;
     public readonly Router $router;
     public readonly RestApi $restApi;
+    public readonly Cron $cron;
     public readonly Admin $admin;
 
     private function __construct()
@@ -29,10 +37,23 @@ final class Plugin
         $this->settings        = new Settings();
         $this->tests           = new TestsRepository();
         $this->variants        = new VariantsRepository();
+        $this->leads           = new LeadsRepository();
+        $this->pageviews       = new PageviewsRepository();
+        $this->leadStage       = new LeadStage();
+        $this->parser          = new LeadPayloadParser();
+        $this->forwarder       = new MakeForwarder($this->settings, $this->leads);
         $this->variantRenderer = new VariantRenderer($this->settings);
         $this->router          = new Router($this->tests, $this->variants, $this->settings, $this->variantRenderer);
-        $this->restApi         = new RestApi();
-        $this->admin           = new Admin($this->settings, $this->tests, $this->variants);
+        $this->restApi         = new RestApi(
+            $this->settings,
+            $this->leads,
+            $this->pageviews,
+            $this->leadStage,
+            $this->parser,
+            $this->forwarder,
+        );
+        $this->cron            = new Cron($this->forwarder);
+        $this->admin           = new Admin($this->settings, $this->tests, $this->variants, $this->leads);
     }
 
     public static function instance(): self
@@ -52,6 +73,7 @@ final class Plugin
 
         $this->router->boot();
         $this->restApi->boot();
+        $this->cron->boot();
 
         if (\is_admin()) {
             $this->admin->boot();
