@@ -3,7 +3,7 @@ Contributors: vixi-agency
 Tags: a/b testing, split testing, lead generation
 Requires at least: 6.2
 Requires PHP: 8.1
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: Proprietary
 
 Generic A/B/N split testing for caraccidenthelp.net. WordPress is the source of truth for leads; Make.com is forwarded server-side after the lead is persisted.
@@ -35,6 +35,9 @@ The plugin ships with a hand-rolled PSR-4 autoloader used as a fallback when no 
 from the plugin root. No runtime dependencies are required.
 
 == Changelog ==
+
+= 1.0.2 =
+* Router and VariantRenderer now emit `nocache_headers()` plus `X-LiteSpeed-Cache-Control: no-cache` so LiteSpeed Cache (and any other compliant proxy) does not cache trigger-path redirects or variant HTML. Without this, cached responses would send the same variant and the same `window.cahSplit` context (same `visitor_id`) to every subsequent visitor, breaking weighted bucketing and per-visitor tracking. Encountered live on a LiteSpeed-hosted staging site.
 
 = 1.0.1 =
 * Replace the HTML-file text input with a dropdown of files actually present in the plugin's variants/ directory, so admins cannot save a filename that doesn't exist on disk. The dropdown includes an "External URL" option for off-file variants and preserves any previously-saved filename marked as "(missing)" so it can be corrected.

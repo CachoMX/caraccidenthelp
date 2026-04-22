@@ -133,6 +133,11 @@ final class Router
         $visitorId = $cookie['visitor_id'] ?? $this->generateVisitorId();
         $this->writeCookie($testId, (int) $variant['id'], $visitorId);
 
+        \nocache_headers();
+        if (!\headers_sent()) {
+            \header('X-LiteSpeed-Cache-Control: no-cache');
+        }
+
         $target = $this->appendQueryString((string) $variant['url']);
         \wp_redirect($target, 302);
         exit;

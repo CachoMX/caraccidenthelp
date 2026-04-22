@@ -52,6 +52,9 @@ final class VariantRenderer
         $html = $this->injectTrackingScripts($html, $test, $variant, $visitorId);
 
         \nocache_headers();
+        if (!\headers_sent()) {
+            \header('X-LiteSpeed-Cache-Control: no-cache');
+        }
         \header('Content-Type: text/html; charset=' . \get_bloginfo('charset'));
         echo $html;
     }
