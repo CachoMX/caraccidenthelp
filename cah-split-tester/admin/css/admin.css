@@ -1,0 +1,202 @@
+.cah-split-wrap { max-width: 1200px; }
+
+.cah-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.cah-card {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    padding: 16px 20px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .04);
+}
+
+.cah-card h2 {
+    margin-top: 0;
+    font-size: 14px;
+    color: #1d2327;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+.cah-card p { color: #50575e; }
+
+.cah-empty {
+    background: #fff;
+    border: 1px dashed #c3c4c7;
+    border-radius: 4px;
+    padding: 40px 20px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.cah-empty p { font-size: 15px; color: #50575e; margin-bottom: 16px; }
+
+.cah-status {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    text-transform: capitalize;
+    background: #f0f0f1;
+    color: #50575e;
+}
+
+.cah-status-active   { background: #d1e7dd; color: #0f5132; }
+.cah-status-paused   { background: #fff3cd; color: #7d5a00; }
+.cah-status-draft    { background: #e2e3e5; color: #383d41; }
+.cah-status-archived { background: #f8d7da; color: #842029; }
+
+.cah-danger { color: #b32d2e; }
+
+.cah-variants-table {
+    margin-top: 8px;
+    margin-bottom: 16px;
+}
+
+.cah-variants-table td,
+.cah-variants-table th {
+    vertical-align: middle;
+    padding: 8px 10px;
+}
+
+.cah-variants-table input[type="text"],
+.cah-variants-table input[type="url"] {
+    width: 100%;
+}
+
+.cah-variants-table input.small-text { width: 70px; }
+
+#cah-weight-sum { font-size: 15px; }
+
+.cah-weight-error {
+    background: #fdecea;
+    border-left: 4px solid #d63638;
+    color: #842029;
+    padding: 10px 14px;
+    margin: 12px 0;
+}
+
+.cah-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin: 20px 0 24px;
+}
+
+.cah-metric {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.cah-metric-label {
+    font-size: 12px;
+    color: #50575e;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+.cah-metric-value {
+    font-size: 28px;
+    font-weight: 600;
+    color: #1d2327;
+}
+
+.cah-metric-sub { font-size: 12px; color: #50575e; }
+
+.cah-daterange {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin: 16px 0;
+}
+.cah-daterange label { display: flex; gap: 6px; align-items: center; font-size: 13px; }
+
+.cah-chart-wrap {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    padding: 16px;
+    margin-bottom: 24px;
+    min-height: 240px;
+}
+
+.cah-utm-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 20px;
+}
+
+.cah-utm-grid h2 { margin-top: 0; }
+
+.cah-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: flex-end;
+    margin: 16px 0;
+    padding: 14px 16px;
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+}
+
+.cah-filters label {
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
+    color: #50575e;
+    gap: 4px;
+}
+
+.cah-filters input[type="text"],
+.cah-filters input[type="date"],
+.cah-filters select {
+    min-width: 140px;
+}
+
+.cah-summary {
+    color: #50575e;
+    font-size: 13px;
+    margin: 4px 0 8px;
+}
+
+.cah-leads-table pre {
+    background: #f6f7f7;
+    border: 1px solid #dcdcde;
+    padding: 10px 12px;
+    font-size: 11px;
+    max-height: 320px;
+    overflow: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.cah-make { font-size: 11px; text-transform: uppercase; letter-spacing: .3px; padding: 2px 6px; border-radius: 3px; }
+.cah-make-pending  { background: #e2e3e5; color: #383d41; }
+.cah-make-success  { background: #d1e7dd; color: #0f5132; }
+.cah-make-failed   { background: #f8d7da; color: #842029; }
+
+.cah-sig {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-family: Consolas, Monaco, monospace;
+    background: #f0f0f1;
+    color: #50575e;
+}
+.cah-sig-strong { background: #d1e7dd; color: #0f5132; }
+.cah-sig-weak   { background: #fff3cd; color: #7d5a00; }
+
+.cah-danger-btn { color: #b32d2e; }
+.cah-danger-btn:hover { color: #b32d2e; border-color: #b32d2e; }
