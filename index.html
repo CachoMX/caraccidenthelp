@@ -837,6 +837,9 @@ function gfTrackStep(stepNumber) {
   var meta = GF_STEP_META[stepNumber] || { name: '', text: function(){ return ''; } };
   var payload = { event: 'growformIframe.growformStepCompleted', grow_step: stepNumber, grow_buttonText: meta.text() };
   Object.assign(payload, gfClientVars());
+  // Override with the actual step being tracked (needed for skipped steps where gfCurStep lags behind)
+  payload['dlv - form_step_number'] = stepNumber;
+  payload['dlv - form_step_name'] = meta.name;
   window.dataLayer.push(payload);
 }
 
