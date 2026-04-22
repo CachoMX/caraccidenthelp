@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace VIXI\CahSplit\Admin;
 
+use VIXI\CahSplit\MakeForwarder;
 use VIXI\CahSplit\Repositories\LeadsRepository;
+use VIXI\CahSplit\Repositories\PageviewsRepository;
 use VIXI\CahSplit\Repositories\StatsRepository;
 use VIXI\CahSplit\Repositories\TestsRepository;
 use VIXI\CahSplit\Repositories\VariantsRepository;
 use VIXI\CahSplit\Settings;
+use VIXI\CahSplit\Stats\Significance;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -28,7 +31,10 @@ final class Admin
         private readonly TestsRepository $tests,
         private readonly VariantsRepository $variants,
         private readonly LeadsRepository $leads,
+        private readonly PageviewsRepository $pageviews,
         private readonly StatsRepository $stats,
+        private readonly Significance $significance,
+        private readonly MakeForwarder $forwarder,
     ) {
     }
 
@@ -42,6 +48,8 @@ final class Admin
         \add_action('admin_post_cah_split_clone_test', [$this, 'handleCloneTest']);
         \add_action('admin_post_cah_split_toggle_status', [$this, 'handleToggleStatus']);
         \add_action('admin_post_cah_split_export_leads', [$this, 'handleLeadsExport']);
+        \add_action('admin_post_cah_split_prune_pageviews', [$this, 'handlePrunePageviews']);
+        \add_action('admin_post_cah_split_retry_make', [$this, 'handleRetryMake']);
     }
 
     public function registerMenu(): void
@@ -136,10 +144,11 @@ final class Admin
         $ids      = \array_map(static fn(array $t): int => (int) $t['id'], $tests);
         $quick    = $this->stats->quickStatsForTests($ids, 30);
         $this->renderView('dashboard', [
-            'tests'      => $tests,
-            'overview'   => $overview,
-            'quickStats' => $quick,
-            'variants'   => $this->variants,
+            'tests'        => $tests,
+            'overview'     => $overview,
+            'quickStats'   => $quick,
+            'variants'     => $this->variants,
+            'failedCount'  => $this->leads->countFailed(MakeForwarder::MAX_ATTEMPTS),
         ]);
     }
 
@@ -170,6 +179,7 @@ final class Admin
                 'series'       => $this->stats->dailySeries($id, $from, $to),
                 'utmSource'    => $this->stats->byUtm($id, 'utm_source', $from, $to),
                 'utmCampaign'  => $this->stats->byUtm($id, 'utm_campaign', $from, $to),
+                'significance' => $this->significance,
                 'from'         => $from,
                 'to'           => $to,
             ]);
@@ -438,6 +448,43 @@ final class Admin
             }
         }
         $this->redirectTo(self::TESTS_SLUG);
+    }
+
+    public function handlePrunePageviews(): void
+    {
+        $this->assertCap();
+        \check_admin_referer('cah_split_prune_pageviews', 'cah_split_nonce');
+
+        $before = isset($_POST['before_date']) ? \sanitize_text_field((string) $_POST['before_date']) : '';
+        if (!\preg_match('/^\d{4}-\d{2}-\d{2}$/', $before)) {
+            \set_transient(
+                'cah_split_error_' . \get_current_user_id(),
+                \__('Provide a valid YYYY-MM-DD date.', 'cah-split'),
+                60
+            );
+            $this->redirectTo(self::SETTINGS_SLUG);
+            return;
+        }
+
+        $deleted = $this->pageviews->pruneOlderThan($before . ' 00:00:00');
+        $this->redirectTo(self::SETTINGS_SLUG, ['pruned' => (string) $deleted]);
+    }
+
+    public function handleRetryMake(): void
+    {
+        $this->assertCap();
+        \check_admin_referer('cah_split_retry_make');
+
+        try {
+            $this->forwarder->retryPending();
+        } catch (\Throwable $e) {
+            \set_transient(
+                'cah_split_error_' . \get_current_user_id(),
+                $e->getMessage(),
+                60
+            );
+        }
+        $this->redirectTo(self::MENU_SLUG, ['retried' => '1']);
     }
 
     private function assertCap(): void

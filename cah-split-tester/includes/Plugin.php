@@ -10,6 +10,7 @@ use VIXI\CahSplit\Repositories\PageviewsRepository;
 use VIXI\CahSplit\Repositories\StatsRepository;
 use VIXI\CahSplit\Repositories\TestsRepository;
 use VIXI\CahSplit\Repositories\VariantsRepository;
+use VIXI\CahSplit\Stats\Significance;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -25,6 +26,7 @@ final class Plugin
     public readonly LeadsRepository $leads;
     public readonly PageviewsRepository $pageviews;
     public readonly StatsRepository $stats;
+    public readonly Significance $significance;
     public readonly LeadStage $leadStage;
     public readonly LeadPayloadParser $parser;
     public readonly MakeForwarder $forwarder;
@@ -42,6 +44,7 @@ final class Plugin
         $this->leads           = new LeadsRepository();
         $this->pageviews       = new PageviewsRepository();
         $this->stats           = new StatsRepository();
+        $this->significance    = new Significance();
         $this->leadStage       = new LeadStage();
         $this->parser          = new LeadPayloadParser();
         $this->forwarder       = new MakeForwarder($this->settings, $this->leads);
@@ -61,7 +64,10 @@ final class Plugin
             $this->tests,
             $this->variants,
             $this->leads,
+            $this->pageviews,
             $this->stats,
+            $this->significance,
+            $this->forwarder,
         );
     }
 

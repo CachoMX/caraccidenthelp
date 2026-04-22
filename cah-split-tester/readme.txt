@@ -3,7 +3,7 @@ Contributors: vixi-agency
 Tags: a/b testing, split testing, lead generation
 Requires at least: 6.2
 Requires PHP: 8.1
-Stable tag: 0.1.0
+Stable tag: 1.0.0
 License: Proprietary
 
 Generic A/B/N split testing for caraccidenthelp.net. WordPress is the source of truth for leads; Make.com is forwarded server-side after the lead is persisted.
@@ -36,5 +36,20 @@ from the plugin root. No runtime dependencies are required.
 
 == Changelog ==
 
+= 1.0.0 =
+* Phase 6: two-proportion z-test significance badge (informational only, no auto-actions) on test detail; manual "Prune old pageviews" tool in Settings; manual "Retry failed Make.com forwards" button in Settings and Dashboard banner.
+
+= 0.5.0 =
+* Phase 5: leads admin page with filters (test, variant, date range, stage, utm_source, state, email, phone), paginated at 50/page with row-expand raw payload, and a streamed CSV export that respects the current filters.
+
+= 0.4.0 =
+* Phase 4: StatsRepository, real dashboard metrics, test detail view with per-variant results, Chart.js daily trend chart, and UTM source / campaign breakdowns.
+
+= 0.3.0 =
+* Phase 3: /wp-json/cah-split/v1/lead endpoint persists leads to WP with the 5-rule server-side lead_stage computation, MakeForwarder pushes to Make.com with cah_lead_id correlation, hourly wp_cron retries failed forwards up to 3 times, /pageview endpoint logs impressions.
+
+= 0.2.0 =
+* Phase 2: template_redirect router with weighted variant selection + cookie persistence + query-string preservation, plugin-rendered /_cah/v/{test-slug}/{variant-slug}/ route with server-side tracking injection, full tests CRUD (list, edit, clone, delete, toggle status) with weight-sum validation, and migration of index.html into variants/v1.html with the single allowed submit-endpoint edit.
+
 = 0.1.0 =
-* Phase 1 scaffolding: plugin bootstrap, activation migrations for the four tables (tests, variants, pageviews, leads), admin menu with Dashboard / Tests / Leads / Settings pages, functional Settings page (Make webhook URL, cookie TTL, drop-tables-on-uninstall toggle, auto-generated IP hash salt).
+* Phase 1: plugin bootstrap, activation migrations for the four tables (tests, variants, pageviews, leads), admin menu with Dashboard / Tests / Leads / Settings pages, functional Settings page (Make webhook URL, cookie TTL, drop-tables-on-uninstall toggle, auto-generated IP hash salt).

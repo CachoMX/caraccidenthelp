@@ -12,11 +12,39 @@ use VIXI\CahSplit\Repositories\VariantsRepository;
 /** @var array<string,mixed> $overview */
 /** @var array<int,array<string,int>> $quickStats */
 /** @var VariantsRepository $variants */
+/** @var int $failedCount */
 
 $newUrl = admin_url('admin.php?page=' . Admin::TESTS_SLUG . '&action=new');
+$retryUrl = wp_nonce_url(
+    admin_url('admin-post.php?action=cah_split_retry_make'),
+    'cah_split_retry_make'
+);
 ?>
 <div class="wrap cah-split-wrap">
     <h1><?php esc_html_e('Split Tester — Dashboard', 'cah-split'); ?></h1>
+
+    <?php if (!empty($_GET['retried'])) : ?>
+        <div class="notice notice-success is-dismissible"><p><?php esc_html_e('Make.com retry triggered.', 'cah-split'); ?></p></div>
+    <?php endif; ?>
+
+    <?php if ($failedCount > 0) : ?>
+        <div class="notice notice-warning">
+            <p>
+                <?php printf(
+                    esc_html(_n(
+                        '%s lead failed to forward to Make.com and is pending retry.',
+                        '%s leads failed to forward to Make.com and are pending retry.',
+                        $failedCount,
+                        'cah-split'
+                    )),
+                    number_format_i18n($failedCount)
+                ); ?>
+                <a href="<?php echo esc_url($retryUrl); ?>" class="button button-secondary" style="margin-left:8px;">
+                    <?php esc_html_e('Retry now', 'cah-split'); ?>
+                </a>
+            </p>
+        </div>
+    <?php endif; ?>
 
     <div class="cah-metrics">
         <div class="cah-metric">

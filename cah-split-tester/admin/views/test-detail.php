@@ -11,8 +11,11 @@ use VIXI\CahSplit\Admin\Admin;
 /** @var array<string,mixed> $series */
 /** @var array<int,array<string,mixed>> $utmSource */
 /** @var array<int,array<string,mixed>> $utmCampaign */
+/** @var \VIXI\CahSplit\Stats\Significance $significance */
 /** @var string $from */
 /** @var string $to */
+
+$baseline = $variantStats[0] ?? null;
 
 $editUrl = admin_url('admin.php?page=' . Admin::TESTS_SLUG . '&action=edit&test_id=' . (int) $test['id']);
 
@@ -89,15 +92,32 @@ foreach ($series['leads'] as $row) {
                 <th><?php esc_html_e('CR', 'cah-split'); ?></th>
                 <th><?php esc_html_e('Qualified', 'cah-split'); ?></th>
                 <th><?php esc_html_e('Qualified CR', 'cah-split'); ?></th>
+                <th><?php esc_html_e('vs baseline', 'cah-split'); ?></th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($variantStats as $vs) :
+            <?php foreach ($variantStats as $idx => $vs) :
                 $pv  = (int) $vs['pageviews'];
                 $lds = (int) $vs['leads'];
                 $ql  = (int) $vs['qualified_leads'];
                 $cr  = $pv > 0 ? ($lds / $pv) * 100 : 0.0;
                 $qcr = $pv > 0 ? ($ql / $pv) * 100 : 0.0;
+
+                $sigText = '—';
+                $sigClass = '';
+                if ($idx > 0 && $baseline !== null) {
+                    $basePv  = (int) $baseline['pageviews'];
+                    $baseLd  = (int) $baseline['leads'];
+                    $pValue  = $significance->twoProportionPValue($lds, $pv, $baseLd, $basePv);
+                    $sigText = $significance->summarize($pValue);
+                    if ($pValue !== null && $pValue < 0.05) {
+                        $sigClass = 'cah-sig-strong';
+                    } elseif ($pValue !== null && $pValue < 0.1) {
+                        $sigClass = 'cah-sig-weak';
+                    }
+                } elseif ($idx === 0) {
+                    $sigText = esc_html__('baseline', 'cah-split');
+                }
                 ?>
                 <tr>
                     <td><strong><?php echo esc_html((string) $vs['name']); ?></strong> <small><?php echo esc_html((string) $vs['slug']); ?></small></td>
@@ -107,10 +127,14 @@ foreach ($series['leads'] as $row) {
                     <td><?php echo esc_html(number_format_i18n($cr, 2)); ?>%</td>
                     <td><?php echo esc_html(number_format_i18n($ql)); ?></td>
                     <td><?php echo esc_html(number_format_i18n($qcr, 2)); ?>%</td>
+                    <td><span class="cah-sig <?php echo esc_attr($sigClass); ?>"><?php echo esc_html($sigText); ?></span></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
+    <p class="description">
+        <?php esc_html_e('Significance is a two-proportion z-test comparing each variant\'s CR to the first variant as baseline. * p<0.05, *** p<0.01. Informational only — no action is taken automatically.', 'cah-split'); ?>
+    </p>
 
     <h2><?php esc_html_e('Daily trend', 'cah-split'); ?></h2>
     <div class="cah-chart-wrap">

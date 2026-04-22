@@ -185,3 +185,18 @@
 .cah-make-pending  { background: #e2e3e5; color: #383d41; }
 .cah-make-success  { background: #d1e7dd; color: #0f5132; }
 .cah-make-failed   { background: #f8d7da; color: #842029; }
+
+.cah-sig {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-family: Consolas, Monaco, monospace;
+    background: #f0f0f1;
+    color: #50575e;
+}
+.cah-sig-strong { background: #d1e7dd; color: #0f5132; }
+.cah-sig-weak   { background: #fff3cd; color: #7d5a00; }
+
+.cah-danger-btn { color: #b32d2e; }
+.cah-danger-btn:hover { color: #b32d2e; border-color: #b32d2e; }
