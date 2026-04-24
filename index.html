@@ -395,8 +395,27 @@
           <div class="gf-nav"><button class="gf-back" onclick="gfPrev()">BACK</button></div>
         </div>
 
-        <!-- STEP 9: Phone + TOS -->
+        <!-- STEP 9: Name -->
         <div class="gf-step" id="gf-step-9">
+          <h2 class="gf-h sm">What's your name?</h2>
+          <div class="gf-name-row">
+            <div class="gf-field">
+              <input type="text" class="gf-input" id="gfFirstName" placeholder="First name" oninput="gfd.firstName=this.value;">
+              <div class="gf-err" id="gf-err-9a">Please enter your first name.</div>
+            </div>
+            <div class="gf-field">
+              <input type="text" class="gf-input" id="gfLastName" placeholder="Last name" oninput="gfd.lastName=this.value;">
+              <div class="gf-err" id="gf-err-9b">Please enter your last name.</div>
+            </div>
+          </div>
+          <div class="gf-nav">
+            <button class="gf-back" onclick="gfPrev()">BACK</button>
+            <button class="gf-next" onclick="gfNext()">NEXT</button>
+          </div>
+        </div>
+
+        <!-- STEP 10: Phone + TOS -->
+        <div class="gf-step" id="gf-step-10">
           <h2 class="gf-h sm">What is your phone number?</h2>
           <div class="gf-field">
             <div class="gf-phone-wrap">
@@ -407,7 +426,7 @@
                        oninput="gfFmtPhone(this);gfd.phone=this.value;gfValidatePhone();if(this.value.replace(/\D/g,'').length===10)gfTrestleLookup(this.value);">
               </div>
             </div>
-            <div class="gf-err" id="gf-err-9a">Please enter a valid 10-digit phone number.</div>
+            <div class="gf-err" id="gf-err-10a">Please enter a valid 10-digit phone number.</div>
             <div class="gf-err" id="gf-err-phone-live" style="display:none;">Please enter a valid US phone number.</div>
           </div>
           <div class="gf-field" style="margin-top:14px;">
@@ -415,26 +434,7 @@
               <input type="checkbox" id="gfTos" onchange="gfd.agree=this.checked;">
               <span style="font-size:14px;color:#fff;">By clicking "Next", you agree that the phone number you are providing may be used to contact you by one of <a href="https://caraccidenthelp.net/sponsors/" target="_blank" style="color:#808080;">our partners</a> (including with auto-dialed and prerecorded calls, and text messages) about your accident and potential legal help. Msg. and data rates apply. You agree that we may contact you anytime, including before 8am or after 9pm local time. You agree to the use of electronic signatures, our <a href="https://caraccidenthelp.net/privacy-policy/" target="_blank" style="color:#808080;">Privacy Policy</a>, and <a href="https://caraccidenthelp.net/terms/" target="_blank" style="color:#808080;">Terms of Use</a>.</span>
             </label>
-            <div class="gf-err" id="gf-err-9b">You must agree to the terms to submit.</div>
-          </div>
-          <div class="gf-nav">
-            <button class="gf-back" onclick="gfPrev()">BACK</button>
-            <button class="gf-next" onclick="gfNext()">NEXT</button>
-          </div>
-        </div>
-
-        <!-- STEP 10: Name -->
-        <div class="gf-step" id="gf-step-10">
-          <h2 class="gf-h sm">What's your name?</h2>
-          <div class="gf-name-row">
-            <div class="gf-field">
-              <input type="text" class="gf-input" id="gfFirstName" placeholder="First name" oninput="gfd.firstName=this.value;">
-              <div class="gf-err" id="gf-err-10a">Please enter your first name.</div>
-            </div>
-            <div class="gf-field">
-              <input type="text" class="gf-input" id="gfLastName" placeholder="Last name" oninput="gfd.lastName=this.value;">
-              <div class="gf-err" id="gf-err-10b">Please enter your last name.</div>
-            </div>
+            <div class="gf-err" id="gf-err-10b">You must agree to the terms to submit.</div>
           </div>
           <div class="gf-nav">
             <button class="gf-back" onclick="gfPrev()">BACK</button>
@@ -663,20 +663,20 @@ function gfValidate(step) {
   if (step === 7) { if (!gfd.zipcode || gfd.zipcode.length !== 5) { showErr('gf-err-7'); return false; } }
   if (step === 9) {
     var ok9 = true;
+    if (!gfd.firstName || !gfd.firstName.trim()) { showErr('gf-err-9a'); ok9 = false; }
+    if (!gfd.lastName  || !gfd.lastName.trim())  { showErr('gf-err-9b'); ok9 = false; }
+    if (!ok9) return false;
+  }
+  if (step === 10) {
+    var ok10 = true;
     var pd = gfd.phone.replace(/\D/g, '');
     // Allow test number 5555555555, otherwise apply strict validation (no leading 0/1, no 10 repeated digits)
     var isTest = pd === '5555555555';
     if (pd.length !== 10 || (!isTest && (/^[01]/.test(pd) || /^(\d)\1{9}$/.test(pd)))) {
-      showErr('gf-err-9a'); ok9 = false;
+      showErr('gf-err-10a'); ok10 = false;
     }
-    if (!gfd.agree) { showErr('gf-err-9b'); ok9 = false; }
-    if (!ok9) return false;
-  }
-  if (step === 10) {
-    var ok = true;
-    if (!gfd.firstName || !gfd.firstName.trim()) { showErr('gf-err-10a'); ok = false; }
-    if (!gfd.lastName  || !gfd.lastName.trim())  { showErr('gf-err-10b'); ok = false; }
-    if (!ok) return false;
+    if (!gfd.agree) { showErr('gf-err-10b'); ok10 = false; }
+    if (!ok10) return false;
   }
   if (step === 11) {
     var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -698,13 +698,6 @@ function gfNextStepNum(cur) {
   if (next === 8 && !gfIsStep8Applicable()) {
     next = 9;
   }
-  // Skip step 10 (name) if Trestle returned name data — fire its event before skipping
-  if (next === 10 && gfTrestle.ready && gfTrestle.firstName && gfTrestle.lastName) {
-    gfd.firstName = gfTrestle.firstName;
-    gfd.lastName = gfTrestle.lastName;
-    gfTrackStep(10);
-    next = 11;
-  }
   // Skip step 11 (email) if Trestle returned email — fire its event before skipping
   if (next === 11 && gfTrestle.ready && gfTrestle.email) {
     gfd.email = gfTrestle.email;
@@ -717,7 +710,6 @@ function gfNextStepNum(cur) {
 function gfPrevStepNum(cur) {
   var prev = cur - 1;
   if (prev === 11 && gfTrestle.ready && gfTrestle.email) prev = 10;
-  if (prev === 10 && gfTrestle.ready && gfTrestle.firstName && gfTrestle.lastName) prev = 9;
   if (prev === 8 && !gfIsStep8Applicable()) prev = 7;
   if (prev === 6 && gfSkipStateStep()) prev = 5;
   if (prev < 1) prev = 1;
@@ -734,16 +726,16 @@ var GF_STEP_META = {
   6:  { name: 'state',         text: function(){ return gfd.stateText; } },
   7:  { name: 'zipcode',       text: function(){ return gfd.zipcode; } },
   8:  { name: 'insured',       text: function(){ return GF_LABELS.insured[gfd.insured]              || gfd.insured; } },
-  9:  { name: 'phone',         text: function(){ return gfd.phone; } },
-  10: { name: 'name',          text: function(){ return gfd.firstName + ' ' + gfd.lastName; } },
+  9:  { name: 'name',          text: function(){ return gfd.firstName + ' ' + gfd.lastName; } },
+  10: { name: 'phone',         text: function(){ return gfd.phone; } },
   11: { name: 'email',         text: function(){ return gfd.email; } },
   12: { name: 'describe',      text: function(){ return gfd.describe; } }
 };
 
 var gfFormCompleted = false;
 
-// ── Trestle phone lookup ────────────────────────────────────
-var gfTrestle = { firstName: '', lastName: '', email: '', ready: false };
+// ── Trestle phone lookup (email only) ───────────────────────
+var gfTrestle = { email: '', ready: false };
 var gfTrestlePromise = null;
 
 function gfTrestleLookup(phone) {
@@ -751,10 +743,8 @@ function gfTrestleLookup(phone) {
   if (clean.length < 10) return;
   gfTrestle.ready = false;
 
-  // Test mode: fake data for 5555555555
+  // Test mode: fake email for 5555555555
   if (clean === '5555555555') {
-    gfTrestle.firstName = 'John';
-    gfTrestle.lastName = 'TestUser';
     gfTrestle.email = 'john.test@example.com';
     gfTrestle.ready = true;
     gfTrestlePromise = Promise.resolve();
@@ -769,8 +759,6 @@ function gfTrestleLookup(phone) {
   .then(function(res) { return res.json(); })
   .then(function(data) {
     if (data.success && data.data) {
-      gfTrestle.firstName = data.data.firstName || '';
-      gfTrestle.lastName = data.data.lastName || '';
       gfTrestle.email = data.data.email || '';
     }
     gfTrestle.ready = true;
@@ -864,7 +852,7 @@ function gfAdvance() {
   gfTrackStep(gfCurStep);
 
   // Wait briefly for Trestle lookup when leaving phone step
-  if (gfCurStep === 9 && gfTrestlePromise && !gfTrestle.ready) {
+  if (gfCurStep === 10 && gfTrestlePromise && !gfTrestle.ready) {
     Promise.race([
       gfTrestlePromise,
       new Promise(function(r) { setTimeout(r, 2000); })
