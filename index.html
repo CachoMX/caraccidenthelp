@@ -1018,16 +1018,6 @@ function gfSubmit() {
     localStorage.setItem('cah_lead_data', JSON.stringify(cahLeadData));
   } catch(e) {}
 
-  // Also log to Google Sheet (for demo/testing)
-  var sheetPayload = Object.assign({}, gfd, gfUtms);
-  var sheetUrl = 'https://script.google.com/macros/s/AKfycbxNvIKH_IedX2ThJG7IC-v2Jb7O2eEPvCf9VBFtm2uBRPj6wTpON6rQg8koHmIe5WJlVQ/exec';
-  try {
-    var blob = new Blob([JSON.stringify(sheetPayload)], { type: 'text/plain' });
-    navigator.sendBeacon(sheetUrl, blob);
-  } catch(e) {
-    fetch(sheetUrl, { method: 'POST', body: JSON.stringify(sheetPayload), keepalive: true }).catch(function(){});
-  }
-
   // Send to Make.com webhook, then redirect
   fetch('https://hook.us2.make.com/bq4dng1sofubjsweiw8w46deyryw5f9b', {
     method: 'POST',
