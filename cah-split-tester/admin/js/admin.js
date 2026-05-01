@@ -62,7 +62,7 @@
                 '<td><input type="text" name="variants[' + index + '][name]" class="regular-text" /></td>' +
                 '<td><input type="text" name="variants[' + index + '][slug]" class="code" /></td>' +
                 '<td>' + htmlFileSelect(index) + '</td>' +
-                '<td><input type="url" name="variants[' + index + '][url]" /></td>' +
+                '<td><input type="text" inputmode="url" name="variants[' + index + '][url]" placeholder="https://example.com/my-page  —  or leave empty for plugin-hosted" /></td>' +
                 '<td><input type="text" name="variants[' + index + '][pretty_path]" placeholder="my-page-b" class="code" /></td>' +
                 '<td><input type="number" min="0" max="100" step="1" name="variants[' + index + '][weight]" value="0" class="small-text cah-weight" /></td>' +
                 '<td><button type="button" class="button-link-delete cah-remove-variant">Remove</button></td>';

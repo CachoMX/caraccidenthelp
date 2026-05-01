@@ -136,8 +136,14 @@ $availableFiles = VariantRenderer::availableFiles();
 
         <h2><?php esc_html_e('Variants', 'cah-split'); ?></h2>
         <p class="description">
-            <?php esc_html_e('Weights must sum to 100. For plugin-hosted variants, drop an HTML file into the plugin\'s variants/ directory (via FTP/SSH) and select it below. For external variants, leave the dropdown on "External URL" and fill the URL field. Optional "Pretty path" lets a plugin-hosted variant be served at a clean URL like /my-page-b/ instead of /_cah/v/<test>/<variant>/. Leave empty to keep the default URL. Pretty paths are only used when the path does not already match a real WordPress page.', 'cah-split'); ?>
+            <?php esc_html_e('Weights must sum to 100.', 'cah-split'); ?>
         </p>
+        <ul class="description" style="margin-left:18px;list-style:disc;">
+            <li><?php esc_html_e('Plugin-hosted variant: drop an HTML file into the plugin\'s variants/ directory (via FTP/SSH) and pick it in "HTML file". Leave "Variant URL" empty — the plugin fills it in for you.', 'cah-split'); ?></li>
+            <li><?php esc_html_e('External variant (e.g. a separate WP page hosting a Growform iframe): leave "HTML file" on "— External URL —" and put the full URL in "Variant URL".', 'cah-split'); ?></li>
+            <li><?php esc_html_e('"Pretty path" only applies to plugin-hosted variants. Setting it serves the variant at /<pretty-path>/ instead of /_cah/v/<test>/<variant>/. Leave empty to use the default. Real WordPress pages with the same slug always win — pretty paths are only used on 404.', 'cah-split'); ?></li>
+            <li><?php esc_html_e('"Variant URL" is the redirect target after weighted bucketing. For plugin-hosted variants it is auto-computed and shown read-only.', 'cah-split'); ?></li>
+        </ul>
         <?php if (empty($availableFiles)) : ?>
             <div class="notice notice-warning inline">
                 <p><?php esc_html_e('No .html files detected in the plugin\'s variants/ directory. Upload at least one (e.g. v1.html) before creating plugin-hosted variants.', 'cah-split'); ?></p>
@@ -157,7 +163,7 @@ $availableFiles = VariantRenderer::availableFiles();
                     <th><?php esc_html_e('Name', 'cah-split'); ?></th>
                     <th><?php esc_html_e('Slug', 'cah-split'); ?></th>
                     <th><?php esc_html_e('HTML file', 'cah-split'); ?></th>
-                    <th><?php esc_html_e('External URL', 'cah-split'); ?></th>
+                    <th title="<?php esc_attr_e('Redirect target after bucketing. Auto-filled for plugin-hosted variants; type the full URL for external variants.', 'cah-split'); ?>"><?php esc_html_e('Variant URL', 'cah-split'); ?></th>
                     <th><?php esc_html_e('Pretty path', 'cah-split'); ?></th>
                     <th style="width: 80px;"><?php esc_html_e('Weight', 'cah-split'); ?></th>
                     <th style="width: 60px;"></th>
@@ -187,7 +193,7 @@ $availableFiles = VariantRenderer::availableFiles();
                                 <?php endforeach; ?>
                             </select>
                         </td>
-                        <td><input type="text" inputmode="url" name="variants[<?php echo (int) $i; ?>][url]" value="<?php echo esc_attr((string) ($v['url'] ?? '')); ?>" placeholder="<?php esc_attr_e('leave empty if using an HTML file', 'cah-split'); ?>" /></td>
+                        <td><input type="text" inputmode="url" name="variants[<?php echo (int) $i; ?>][url]" value="<?php echo esc_attr((string) ($v['url'] ?? '')); ?>" placeholder="<?php esc_attr_e('https://example.com/my-page  —  or leave empty for plugin-hosted', 'cah-split'); ?>" /></td>
                         <td><input type="text" name="variants[<?php echo (int) $i; ?>][pretty_path]" value="<?php echo esc_attr((string) ($v['pretty_path'] ?? '')); ?>" placeholder="car-accident-b" class="code" /></td>
                         <td><input type="number" min="0" max="100" step="1" name="variants[<?php echo (int) $i; ?>][weight]" value="<?php echo esc_attr((string) ($v['weight'] ?? 0)); ?>" class="small-text cah-weight" /></td>
                         <td><button type="button" class="button-link-delete cah-remove-variant"><?php esc_html_e('Remove', 'cah-split'); ?></button></td>

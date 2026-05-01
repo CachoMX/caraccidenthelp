@@ -53,6 +53,12 @@ final class RestApi
             'callback'            => [$this, 'handleLead'],
             'permission_callback' => '__return_true',
         ]);
+
+        \register_rest_route(self::NAMESPACE, '/lead-skip', [
+            'methods'             => WP_REST_Server::CREATABLE,
+            'callback'            => [$this, 'handleLeadSkip'],
+            'permission_callback' => '__return_true',
+        ]);
     }
 
     public function handleTrackingJs(WP_REST_Request $request): void
@@ -274,6 +280,58 @@ final class RestApi
             'redirect_url' => $redirect,
             'make_status'  => $skipMake ? LeadsRepository::MAKE_STATUS_SKIPPED : null,
         ], 201);
+    }
+
+    /**
+     * Observability-only endpoint. The /thank-you/ and /diminished-value-claim/
+     * scripts (Path B) have several silent-return paths today (no cookie,
+     * cookie parse failed, lead_stage missing, sessionStorage dedup hit, etc).
+     * Each of those is a potential lost lead vs Hyros and we have no way to
+     * see how often they fire. From v1.0.16 the snippet calls /lead-skip
+     * BEFORE every silent return with a reason tag. This endpoint:
+     *   - never validates auth (it's anonymous)
+     *   - never rejects (returns 200 always)
+     *   - logs to wp_cah_log under `rest.lead_skip.<reason>` so the existing
+     *     admin Logs page surfaces the counts as filterable source pills
+     */
+    public function handleLeadSkip(WP_REST_Request $request): WP_REST_Response
+    {
+        $body = $this->readBody($request);
+
+        $allowed = [
+            'no-cookie',
+            'parse-failed-no-dot',
+            'parse-failed-no-ids',
+            'from-cah-form',
+            'missing-stage',
+            'dedup-session',
+            'fetch-failed',
+        ];
+        $reason = isset($body['reason']) ? \sanitize_key((string) $body['reason']) : '';
+        if (!\in_array($reason, $allowed, true)) {
+            $reason = 'unknown';
+        }
+
+        $this->logger?->info('rest.lead_skip.' . $reason, 'lead skipped client-side', [
+            'reason'         => $reason,
+            'test_id'        => isset($body['test_id'])    ? (int) $body['test_id']    : null,
+            'variant_id'     => isset($body['variant_id']) ? (int) $body['variant_id'] : null,
+            'visitor_id'     => isset($body['visitor_id']) ? (string) $body['visitor_id'] : null,
+            'lead_stage'     => isset($body['lead_stage']) ? \sanitize_text_field((string) $body['lead_stage']) : null,
+            'lead_stage_received' => isset($body['lead_stage_received']) ? \sanitize_text_field((string) $body['lead_stage_received']) : null,
+            'from_cah_form'  => isset($body['from_cah_form']) ? (string) $body['from_cah_form'] : null,
+            'has_email'      => !empty($body['has_email']),
+            'has_phone'      => !empty($body['has_phone']),
+            'url'            => $this->truncate(isset($body['url']) ? (string) $body['url'] : null, 200),
+            'referrer'       => $this->truncate(isset($body['referrer']) ? (string) $body['referrer'] : null, 200),
+            'cookie_raw'     => $this->truncate(isset($body['cookie_raw']) ? (string) $body['cookie_raw'] : null, 100),
+            'content_type'   => (string) $request->get_header('content-type'),
+            'ip_hash'        => $this->ipHash(),
+            'user_agent'     => $this->truncate((string) ($_SERVER['HTTP_USER_AGENT'] ?? ''), 200),
+            'page_referrer'  => $this->truncate((string) ($_SERVER['HTTP_REFERER'] ?? ''), 200),
+        ]);
+
+        return new WP_REST_Response(['success' => true, 'reason' => $reason], 200);
     }
 
     private function readBody(WP_REST_Request $request): array

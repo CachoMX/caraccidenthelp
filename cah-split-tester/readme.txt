@@ -3,7 +3,7 @@ Contributors: vixi-agency
 Tags: a/b testing, split testing, lead generation
 Requires at least: 6.2
 Requires PHP: 8.1
-Stable tag: 1.0.15
+Stable tag: 1.0.16
 License: Proprietary
 
 Generic A/B/N split testing for caraccidenthelp.net. WordPress is the source of truth for leads; Make.com is forwarded server-side after the lead is persisted.
@@ -35,6 +35,16 @@ The plugin ships with a hand-rolled PSR-4 autoloader used as a fallback when no 
 from the plugin root. No runtime dependencies are required.
 
 == Changelog ==
+
+= 1.0.16 =
+* **New `/lead-skip` REST endpoint** — closes the last visibility gap on Path B (Growform → /thank-you/ snippet). The snippet today silently aborts in 6 cases (no `cah_variant_2` cookie, malformed cookie, `from_cah_form=1`, missing `lead_stage`, `sessionStorage` dedup hit, fetch failure). With v1.0.16, the snippet is updated to call `/lead-skip` with a `reason` tag BEFORE every silent return, so the admin Logs page shows exactly how often each path fires. Reasons are whitelisted server-side: `no-cookie`, `parse-failed-no-dot`, `parse-failed-no-ids`, `from-cah-form`, `missing-stage`, `dedup-session`, `fetch-failed`, `unknown`. Each surfaces as its own `rest.lead_skip.<reason>` source pill in the 24h source breakdown.
+* The endpoint is anonymous (matches `/lead` and `/pageview`), never validates auth, never rejects; always returns HTTP 200 with `{success:true, reason}`. Context recorded includes `test_id`, `variant_id`, `lead_stage` (sent and received), `has_email`, `has_phone`, `url`, `referrer`, `ip_hash`, `user_agent`, content-type, and a truncated cookie value when relevant. Truncated to 200 chars per field to keep `wp_cah_log` rows reasonable.
+* **Admin form UX rename** — column "External URL" renamed to "Variant URL" with title-attribute tooltip clarifying that the field is the redirect target after bucketing (auto-filled for plugin-hosted, manual for external). Placeholder updated from `leave empty if using an HTML file` to `https://example.com/my-page — or leave empty for plugin-hosted`. The help block above the table is now a proper bullet list explaining plugin-hosted vs external vs pretty path. Same change applied to the "Add variant" dynamic JS row builder so new rows match the existing UI exactly.
+* **No DB schema changes**, no migrations. dbDelta still runs idempotently.
+
+== Path B operator note (1.0.16) ==
+
+After deploying 1.0.16, replace the snippet pasted into both `/thank-you/` and `/diminished-value-claim/` WordPress page bodies with the new version that calls `/lead-skip` before every silent return. The new snippet is documented inside the plugin under `docs/path-b-thank-you-snippet.html` (also in the GitHub release notes). Until the snippet is updated, the old snippet keeps working — the `/lead-skip` endpoint just doesn't get called and you don't see the skip pills.
 
 = 1.0.15 =
 * **Hotfix to 1.0.14 observability — close two visibility gaps that left the Logs page empty for normal traffic.**
