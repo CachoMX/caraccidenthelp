@@ -5,6 +5,7 @@ if (!defined('ABSPATH')) {
 }
 
 use VIXI\CahSplit\Admin\Admin;
+use VIXI\CahSplit\RestApi;
 
 /** @var array<int,array<string,mixed>> $leads */
 /** @var int $totalLeads */
@@ -102,6 +103,20 @@ function cah_format_dt(?string $value): string
             <input type="text" name="phone" value="<?php echo esc_attr((string) ($filters['phone'] ?? '')); ?>" />
         </label>
 
+        <label><?php esc_html_e('Source', 'cah-split'); ?>
+            <select name="source">
+                <option value=""><?php esc_html_e('Any source', 'cah-split'); ?></option>
+                <option value="__null__" <?php selected((string) ($filters['source'] ?? ''), '__null__'); ?>>
+                    <?php esc_html_e('— (no source)', 'cah-split'); ?>
+                </option>
+                <?php foreach (RestApi::ALLOWED_SOURCES as $sourceOpt) : ?>
+                    <option value="<?php echo esc_attr($sourceOpt); ?>" <?php selected((string) ($filters['source'] ?? ''), $sourceOpt); ?>>
+                        <?php echo esc_html($sourceOpt); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </label>
+
         <button class="button button-primary"><?php esc_html_e('Filter', 'cah-split'); ?></button>
         <a href="<?php echo esc_url(admin_url('admin.php?page=' . Admin::LEADS_SLUG)); ?>" class="button"><?php esc_html_e('Reset', 'cah-split'); ?></a>
     </form>
@@ -118,20 +133,25 @@ function cah_format_dt(?string $value): string
         <table class="wp-list-table widefat fixed striped cah-leads-table">
             <thead>
                 <tr>
+                    <th style="width:60px;"><?php esc_html_e('ID', 'cah-split'); ?></th>
                     <th><?php esc_html_e('Date', 'cah-split'); ?></th>
                     <th><?php esc_html_e('Name', 'cah-split'); ?></th>
                     <th><?php esc_html_e('Contact', 'cah-split'); ?></th>
                     <th><?php esc_html_e('State', 'cah-split'); ?></th>
                     <th><?php esc_html_e('Service', 'cah-split'); ?></th>
                     <th><?php esc_html_e('Stage', 'cah-split'); ?></th>
+                    <th title="<?php esc_attr_e('Where the lead came from. path_a_html_v1 = HTML v1 form. path_b_growform = Growform → /thank-you/ with full attribution. path_b_no_cookie = visitor reached /thank-you/ directly without going through the split (no variant attribution). path_b_parse_failed_* = cookie was corrupt. path_b_missing_stage = cookie OK but ?lead_stage param missing.', 'cah-split'); ?>"><?php esc_html_e('Source', 'cah-split'); ?></th>
                     <th><?php esc_html_e('UTM source', 'cah-split'); ?></th>
                     <th><?php esc_html_e('Make', 'cah-split'); ?></th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($leads as $lead) : ?>
+                <?php foreach ($leads as $lead) :
+                    $sourceVal = (string) ($lead['source'] ?? '');
+                    ?>
                     <tr>
+                        <td><code>#<?php echo esc_html((string) ($lead['id'] ?? '')); ?></code></td>
                         <td><?php echo cah_format_dt((string) ($lead['created_at'] ?? '')); ?></td>
                         <td><?php echo esc_html(trim(((string) ($lead['first_name'] ?? '')) . ' ' . ((string) ($lead['last_name'] ?? '')))); ?></td>
                         <td>
@@ -141,12 +161,19 @@ function cah_format_dt(?string $value): string
                         <td><?php echo esc_html((string) ($lead['state'] ?? '')); ?></td>
                         <td><?php echo esc_html((string) ($lead['service_type'] ?? '')); ?></td>
                         <td><span class="cah-status cah-status-<?php echo esc_attr((string) ($lead['lead_stage'] ?? 'unknown')); ?>"><?php echo esc_html((string) ($lead['lead_stage'] ?? 'unknown')); ?></span></td>
+                        <td>
+                            <?php if ($sourceVal !== '') : ?>
+                                <span class="cah-source cah-source-<?php echo esc_attr($sourceVal); ?>"><?php echo esc_html($sourceVal); ?></span>
+                            <?php else : ?>
+                                <span class="cah-source cah-source-empty">—</span>
+                            <?php endif; ?>
+                        </td>
                         <td><?php echo esc_html((string) ($lead['utm_source'] ?? '')); ?></td>
                         <td><span class="cah-make cah-make-<?php echo esc_attr((string) ($lead['make_status'] ?? '')); ?>"><?php echo esc_html((string) ($lead['make_status'] ?? '')); ?></span></td>
                         <td><button type="button" class="button-link cah-expand" data-lead="<?php echo esc_attr((string) $lead['id']); ?>"><?php esc_html_e('Details', 'cah-split'); ?></button></td>
                     </tr>
                     <tr class="cah-lead-detail" id="cah-lead-detail-<?php echo esc_attr((string) $lead['id']); ?>" hidden>
-                        <td colspan="9">
+                        <td colspan="11">
                             <pre><?php echo esc_html(
                                 wp_json_encode(
                                     json_decode((string) ($lead['raw_payload'] ?? 'null'), true),

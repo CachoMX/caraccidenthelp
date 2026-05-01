@@ -187,6 +187,24 @@
 .cah-make-failed   { background: #f8d7da; color: #842029; }
 .cah-make-skipped  { background: #cfe2ff; color: #084298; }
 
+.cah-source {
+    font-family: Consolas, Monaco, monospace;
+    font-size: 10.5px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: #f0f0f1;
+    color: #50575e;
+    white-space: nowrap;
+}
+.cah-source-path_a_html_v1                { background: #d1e7dd; color: #0f5132; }
+.cah-source-path_b_growform                { background: #cfe2ff; color: #084298; }
+.cah-source-path_b_no_cookie               { background: #fff3cd; color: #7d5a00; }
+.cah-source-path_b_parse_failed_no_dot     { background: #f8d7da; color: #842029; }
+.cah-source-path_b_parse_failed_no_ids     { background: #f8d7da; color: #842029; }
+.cah-source-path_b_missing_stage           { background: #ffe5cc; color: #8a4b00; }
+.cah-source-unknown                        { background: #e2e3e5; color: #383d41; }
+.cah-source-empty                          { background: transparent; color: #999; }
+
 .cah-sig {
     display: inline-block;
     padding: 2px 6px;

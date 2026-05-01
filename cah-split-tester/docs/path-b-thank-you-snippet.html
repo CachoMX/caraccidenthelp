@@ -1,157 +1,42 @@
 <!--
-  CAH Split Tester — Path B thank-you / disqualified-page snippet (v1.0.16+)
-  =========================================================================
+  CAH Split Tester — Path B observability (v1.0.17+)
+  ==================================================
 
-  Paste this <script> block into the WordPress page bodies of:
-    - https://caraccidenthelp.net/thank-you/
-    - https://caraccidenthelp.net/diminished-value-claim/
+  STATUS: Auto-injected by the plugin. No manual paste required.
 
-  Replaces the previous snippet whose silent-return paths were invisible.
-  This version calls /lead-skip with a `reason` tag BEFORE every silent
-  return so the admin Logs page (Split Tester → Logs) shows exactly which
-  silent return is firing how often, alongside `rest.lead.received` /
-  `rest.lead.created` for the leads that DO go through.
+  As of v1.0.17, the plugin's `PathBInjector` service hooks `wp_footer` and
+  automatically injects assets/path-b.js when the request path matches
+  /thank-you/ or /diminished-value-claim/ (paths derived from
+  LeadStage::URL_QUALIFIED and LeadStage::URL_DISQUALIFIED).
 
-  Matrix of skip reasons (each shows up as a source pill in the Logs page):
-    rest.lead_skip.no-cookie            → cah_variant_2 cookie absent
-    rest.lead_skip.parse-failed-no-dot  → cookie present but malformed (no '.')
-    rest.lead_skip.parse-failed-no-ids  → cookie parts didn't yield valid ids
-    rest.lead_skip.from-cah-form        → ?from_cah_form=1 (HTML v1 already submitted)
-    rest.lead_skip.missing-stage        → ?lead_stage missing or invalid
-    rest.lead_skip.dedup-session        → sessionStorage already saw this lead
-    rest.lead_skip.fetch-failed         → /lead POST itself errored / non-2xx
-    rest.lead_skip.unknown              → reason wasn't in the whitelist (safety net)
+  Why we moved away from manual paste: WordPress KSES strips <script> tags
+  from page content for users without `unfiltered_html` capability, so
+  pasting the snippet into the WP page editor left only the HTML comment
+  block — the script never ran.
 
-  Compare against Hyros for the same window:
+  If you previously pasted the older snippet manually into either page,
+  REMOVE IT to avoid double-execution (the auto-injected script has a
+  double-load guard, but it's cleaner to delete the orphaned content).
+
+  Path matching:
+    - LeadStage::URL_QUALIFIED    → /thank-you/
+    - LeadStage::URL_DISQUALIFIED → /diminished-value-claim/
+
+  Skip-reason matrix (each surfaces as a `rest.lead_skip.<reason>` source pill):
+    no-cookie            → cah_variant_<test_id> cookie absent
+    parse-failed-no-dot  → cookie present but malformed (no '.')
+    parse-failed-no-ids  → cookie parts didn't yield valid ids
+    from-cah-form        → ?from_cah_form=1 (HTML v1 already submitted)
+    missing-stage        → ?lead_stage missing or invalid
+    dedup-session        → sessionStorage already saw this lead
+    fetch-failed         → /lead POST itself errored / non-2xx
+    unknown              → reason wasn't in the whitelist (safety net)
+
+  Comparison heuristics:
     if rest.lead_skip.no-cookie >> rest.lead.created   → cookie loss (Safari ITP, direct campaign links, expired)
     if rest.lead_skip.dedup-session is large           → users reloading thank-you (good — would otherwise dup)
     if rest.lead_skip.missing-stage > 0                → Growform redirect URL drifted; check Growform thank-you config
     if rest.lead_skip.fetch-failed > 0                 → server / network errors; check Hostinger PHP error log
+
+  Source of truth for the JS itself: assets/path-b.js
 -->
-<script>
-(function(){
-  var REST = 'https://caraccidenthelp.net/wp-json/cah-split/v1';
-
-  // Always-fire skip beacon. Never throws, never blocks.
-  function logSkip(reason, extra) {
-    extra = extra || {};
-    extra.reason = reason;
-    try {
-      var body = JSON.stringify(extra);
-      if (navigator.sendBeacon) {
-        var blob = new Blob([body], { type: 'application/json' });
-        if (navigator.sendBeacon(REST + '/lead-skip', blob)) { return; }
-      }
-      fetch(REST + '/lead-skip', {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json' },
-        keepalive: true,
-        body: body
-      }).catch(function(){});
-    } catch (e) {}
-  }
-
-  // Read query params once.
-  var params = {};
-  try {
-    new URLSearchParams(window.location.search).forEach(function(v,k){ params[k] = v; });
-  } catch (e) {}
-
-  var pageContext = {
-    url: window.location.pathname + (window.location.search ? window.location.search.substring(0, 200) : ''),
-    referrer: (document.referrer || '').substring(0, 200),
-    has_email: !!params.email,
-    has_phone: !!params.phone,
-    lead_stage_received: params.lead_stage || '',
-    from_cah_form: params.from_cah_form || ''
-  };
-
-  // ── Cookie present? ─────────────────────────────────────────────
-  var c = document.cookie.split('; ').find(function(x){ return x.indexOf('cah_variant_2=') === 0; });
-  if (!c) {
-    logSkip('no-cookie', pageContext);
-    return;
-  }
-
-  var raw = c.split('=')[1];
-  var p = raw.split('.');
-  if (p.length < 2) {
-    logSkip('parse-failed-no-dot', Object.assign({}, pageContext, { cookie_raw: raw.substring(0, 80) }));
-    return;
-  }
-
-  var vid = parseInt(p[0], 10);
-  var uid = p.slice(1).join('.');
-  if (!vid || !uid) {
-    logSkip('parse-failed-no-ids', Object.assign({}, pageContext, { cookie_raw: raw.substring(0, 80) }));
-    return;
-  }
-
-  // ── HTML v1 already submitted before redirecting here. Don't dup. ─
-  if (params.from_cah_form === '1') {
-    logSkip('from-cah-form', Object.assign({}, pageContext, {
-      test_id: 2,
-      variant_id: vid,
-      lead_stage: params.lead_stage
-    }));
-    return;
-  }
-
-  // ── lead_stage required (Growform sets it on redirect). ──────────
-  if (params.lead_stage !== 'qualified-lead' && params.lead_stage !== 'disqualified-lead') {
-    logSkip('missing-stage', Object.assign({}, pageContext, {
-      test_id: 2,
-      variant_id: vid
-    }));
-    return;
-  }
-
-  // ── Per-session dedup (page reload protection). ──────────────────
-  var key = 'cah_lead_sent_' + (params.email || params.phone || params.TrustedForm_certUrl || Date.now());
-  if (sessionStorage.getItem(key)) {
-    logSkip('dedup-session', Object.assign({}, pageContext, {
-      test_id: 2,
-      variant_id: vid,
-      lead_stage: params.lead_stage
-    }));
-    return;
-  }
-  sessionStorage.setItem(key, '1');
-
-  // ── Submit the lead with skip_make=true (Growform already sent to Make). ──
-  fetch(REST + '/lead', {
-    method: 'POST',
-    credentials: 'same-origin',
-    headers: { 'Content-Type': 'application/json' },
-    keepalive: true,
-    body: JSON.stringify({
-      test_id: 2,
-      variant_id: vid,
-      visitor_id: uid,
-      skip_make: true,
-      fields: params,
-      form_meta: {
-        form_name: 'Growform via /thank-you/',
-        variant_id: vid,
-        lead_stage: params.lead_stage,
-        trusted_form_cert: params.TrustedForm_certUrl || ''
-      }
-    })
-  }).then(function(res){
-    if (!res || !res.ok) {
-      logSkip('fetch-failed', Object.assign({}, pageContext, {
-        test_id: 2, variant_id: vid,
-        lead_stage: params.lead_stage,
-        http_status: res ? res.status : 0
-      }));
-    }
-  }).catch(function(err){
-    logSkip('fetch-failed', Object.assign({}, pageContext, {
-      test_id: 2, variant_id: vid,
-      lead_stage: params.lead_stage,
-      err: String(err && err.message || err).substring(0, 120)
-    }));
-  });
-})();
-</script>

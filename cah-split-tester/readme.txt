@@ -3,7 +3,7 @@ Contributors: vixi-agency
 Tags: a/b testing, split testing, lead generation
 Requires at least: 6.2
 Requires PHP: 8.1
-Stable tag: 1.0.16
+Stable tag: 1.0.17
 License: Proprietary
 
 Generic A/B/N split testing for caraccidenthelp.net. WordPress is the source of truth for leads; Make.com is forwarded server-side after the lead is persisted.
@@ -35,6 +35,23 @@ The plugin ships with a hand-rolled PSR-4 autoloader used as a fallback when no 
 from the plugin root. No runtime dependencies are required.
 
 == Changelog ==
+
+= 1.0.17 =
+* **Capture-everything: every form submission becomes a row in `wp_cah_leads`, no exceptions.** Visitors who reach `/thank-you/` directly without going through the split test (no `cah_variant_2` cookie) used to fire `rest.lead_skip.no-cookie` and be lost from the dashboard. Now they create a real lead row tagged `source='path_b_no_cookie'`, with NULL `variant_id`. Same for cookie-corruption cases (`path_b_parse_failed_no_dot`, `path_b_parse_failed_no_ids`) and for visitors whose Growform redirect was missing `?lead_stage=` (`path_b_missing_stage`, lead_stage='unknown'). Total `wp_cah_leads` row count for a day should now match Hyros total for the same window. The dashboard CR will look LOWER than before because the unattributed leads inflate the lead count without inflating pageviews — that's the correct behavior; the previous numbers were under-counting.
+* **New `source` column on `wp_cah_leads`** (`VARCHAR(64) DEFAULT NULL`, indexed). Whitelist enforced server-side in `RestApi::ALLOWED_SOURCES`:
+    * `path_a_html_v1` — submitted by HTML v1 form via tracking.js
+    * `path_b_growform` — Growform → /thank-you/ with valid cookie + lead_stage (full attribution)
+    * `path_b_no_cookie` — visitor reached /thank-you/ without cah_variant_<id> cookie (direct visit / Safari ITP / cookie expired)
+    * `path_b_parse_failed_no_dot` — cookie present but malformed (no '.')
+    * `path_b_parse_failed_no_ids` — cookie parts didn't yield valid ids
+    * `path_b_missing_stage` — cookie OK but ?lead_stage param missing/invalid
+    * `unknown` — fallback when an unrecognized source is sent
+  Source is also reflected in the `rest.lead.created` log row so the Logs page shows the breakdown.
+* **Admin Leads page** got a new "Source" filter (with explicit "(no source)" option for legacy rows from before 1.0.17) and a new "Source" column with color-coded pills next to "Stage". A new leftmost "ID" column shows `#<id>` so individual leads are unambiguously addressable. The CSV export adds a `source` column right after `visitor_id`.
+* **`PathBInjector` service** auto-injects the new `assets/path-b.js` on `/thank-you/` and `/diminished-value-claim/` via `wp_footer` priority 99, with a small inline `window.cahPathB = {rest, test_id}` boot block. This bypasses WordPress KSES, which strips `<script>` tags from page content for users without `unfiltered_html` capability — that's why pasting the snippet into the WP page editor failed before. Path matching is derived from `LeadStage::URL_QUALIFIED` and `LeadStage::URL_DISQUALIFIED` so the constants stay the single source of truth. Operator NOTE: if you previously pasted the older snippet manually into either page, REMOVE it to avoid double-execution. The injected script has a `window.__cahPathBLoaded` guard, but cleaner is a clean page.
+* **`assets/path-b.js`** is the new always-capture client. Same skip-reason categorization (no-cookie, parse-failed-*, from-cah-form, missing-stage, dedup-session, fetch-failed) but now no-cookie / parse-failed / missing-stage POST to `/lead` instead of `/lead-skip`, with the appropriate `source` tag. Only `from-cah-form` (HTML v1 already submitted) and `dedup-session` (page reload) and `fetch-failed` remain as `/lead-skip` calls — those are legitimate dedup/error paths where a row should NOT be created.
+* **`assets/tracking.js`** (Path A) now tags every lead `source='path_a_html_v1'` in the POST body so HTML v1 leads are clearly distinguished from Path B leads.
+* **DB migration**: dbDelta adds `source VARCHAR(64) DEFAULT NULL` column + `KEY idx_source (source)` to `wp_cah_leads`. No data is touched. Pre-1.0.17 leads will display "—" in the Source column and can be filtered as "(no source)".
 
 = 1.0.16 =
 * **New `/lead-skip` REST endpoint** — closes the last visibility gap on Path B (Growform → /thank-you/ snippet). The snippet today silently aborts in 6 cases (no `cah_variant_2` cookie, malformed cookie, `from_cah_form=1`, missing `lead_stage`, `sessionStorage` dedup hit, fetch failure). With v1.0.16, the snippet is updated to call `/lead-skip` with a `reason` tag BEFORE every silent return, so the admin Logs page shows exactly how often each path fires. Reasons are whitelisted server-side: `no-cookie`, `parse-failed-no-dot`, `parse-failed-no-ids`, `from-cah-form`, `missing-stage`, `dedup-session`, `fetch-failed`, `unknown`. Each surfaces as its own `rest.lead_skip.<reason>` source pill in the 24h source breakdown.

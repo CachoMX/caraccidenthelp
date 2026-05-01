@@ -38,6 +38,7 @@ final class Plugin
     public readonly RestApi $restApi;
     public readonly Cron $cron;
     public readonly LeadReprocessor $reprocessor;
+    public readonly PathBInjector $pathBInjector;
     public readonly Admin $admin;
 
     private function __construct()
@@ -71,6 +72,7 @@ final class Plugin
             $this->parser,
             $this->leadStage,
         );
+        $this->pathBInjector   = new PathBInjector($this->settings);
         $this->admin           = new Admin(
             $this->settings,
             $this->tests,
@@ -103,6 +105,7 @@ final class Plugin
         $this->router->boot();
         $this->restApi->boot();
         $this->cron->boot();
+        $this->pathBInjector->boot();
 
         if (\is_admin()) {
             $this->admin->boot();

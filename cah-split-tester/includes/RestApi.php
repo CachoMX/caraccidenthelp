@@ -18,6 +18,30 @@ final class RestApi
 {
     public const NAMESPACE = 'cah-split/v1';
 
+    /**
+     * Whitelist of values accepted in the optional `source` field of a /lead
+     * POST. Anything else falls back to 'unknown'. Used by the admin Leads
+     * page filter and the analytics breakdown.
+     *
+     * Source semantics:
+     *   path_a_html_v1                - submitted by HTML v1 form (tracking.js)
+     *   path_b_growform               - submitted from /thank-you/ via path-b.js with valid cookie + lead_stage
+     *   path_b_no_cookie              - thank-you hit without cah_variant_<id> cookie (direct visit / cookie expired)
+     *   path_b_parse_failed_no_dot    - cookie present but malformed (no '.')
+     *   path_b_parse_failed_no_ids    - cookie parts didn't yield valid ids
+     *   path_b_missing_stage          - cookie OK but ?lead_stage param missing/invalid (still capture)
+     *   unknown                       - source not provided or not recognized
+     */
+    public const ALLOWED_SOURCES = [
+        'path_a_html_v1',
+        'path_b_growform',
+        'path_b_no_cookie',
+        'path_b_parse_failed_no_dot',
+        'path_b_parse_failed_no_ids',
+        'path_b_missing_stage',
+        'unknown',
+    ];
+
     public function __construct(
         private readonly Settings $settings,
         private readonly LeadsRepository $leads,
@@ -203,6 +227,11 @@ final class RestApi
 
         $rawPayload = \wp_json_encode($body);
 
+        $sourceRaw = isset($body['source']) ? \sanitize_key((string) $body['source']) : '';
+        $source = \in_array($sourceRaw, self::ALLOWED_SOURCES, true)
+            ? $sourceRaw
+            : ($sourceRaw === '' ? null : 'unknown');
+
         $data = \array_merge($fields, [
             'test_id'     => isset($body['test_id']) ? (int) $body['test_id'] : null,
             'variant_id'  => isset($body['variant_id']) ? (int) $body['variant_id'] : null,
@@ -210,6 +239,7 @@ final class RestApi
                 ? \sanitize_text_field((string) $body['visitor_id'])
                 : null,
             'lead_stage'  => $stage,
+            'source'      => $source,
             'ip_hash'     => $this->ipHash(),
             'user_agent'  => $this->truncate((string) ($_SERVER['HTTP_USER_AGENT'] ?? ''), 500),
             'raw_payload' => $rawPayload,
@@ -267,6 +297,7 @@ final class RestApi
             'variant_id'   => $data['variant_id'] ?? null,
             'visitor_id'   => $data['visitor_id'] ?? null,
             'lead_stage'   => $stage,
+            'source'       => $source,
             'skip_make'    => $skipMake,
             'has_email'    => !empty($data['email']),
             'has_phone'    => !empty($data['phone']),

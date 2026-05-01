@@ -252,6 +252,16 @@ final class LeadsRepository
                 $args[]    = '%' . $wpdb->esc_like($digits) . '%';
             }
         }
+        if (!empty($filters['source'])) {
+            $source = (string) $filters['source'];
+            if ($source === '__null__') {
+                $clauses[] = '(source IS NULL OR source = %s)';
+                $args[]    = '';
+            } else {
+                $clauses[] = 'source = %s';
+                $args[]    = $source;
+            }
+        }
 
         $where = $clauses === [] ? '' : 'WHERE ' . \implode(' AND ', $clauses);
         return [$where, $args];

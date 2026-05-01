@@ -82,6 +82,7 @@
             test_id: ctx.test_id || null,
             variant_id: ctx.variant_id || null,
             visitor_id: ctx.visitor_id || null,
+            source: 'path_a_html_v1',
             make_payload: makePayload
         };
         return fetch(ctx.rest_base + '/lead', {

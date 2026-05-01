@@ -268,7 +268,7 @@ final class Admin
 
         $output = \fopen('php://output', 'w');
         \fputcsv($output, [
-            'id', 'created_at', 'test_id', 'variant_id', 'visitor_id',
+            'id', 'created_at', 'test_id', 'variant_id', 'visitor_id', 'source',
             'first_name', 'last_name', 'email', 'phone', 'state', 'zipcode',
             'service_type', 'attorney', 'fault', 'injury', 'timeframe', 'insured',
             'describe_accident', 'lead_stage',
@@ -287,6 +287,7 @@ final class Admin
                     $row['test_id'] ?? '',
                     $row['variant_id'] ?? '',
                     $row['visitor_id'] ?? '',
+                    $row['source'] ?? '',
                     $row['first_name'] ?? '',
                     $row['last_name'] ?? '',
                     $row['email'] ?? '',
@@ -338,6 +339,7 @@ final class Admin
             'state'      => isset($_GET['state']) ? \sanitize_text_field((string) $_GET['state']) : '',
             'email'      => isset($_GET['email']) ? \sanitize_text_field((string) $_GET['email']) : '',
             'phone'      => isset($_GET['phone']) ? \sanitize_text_field((string) $_GET['phone']) : '',
+            'source'     => isset($_GET['source']) ? \sanitize_text_field((string) $_GET['source']) : '',
         ];
         $from = isset($_GET['from']) ? \sanitize_text_field((string) $_GET['from']) : '';
         $to   = isset($_GET['to']) ? \sanitize_text_field((string) $_GET['to']) : '';

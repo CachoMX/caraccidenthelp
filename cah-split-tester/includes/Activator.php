@@ -131,6 +131,7 @@ final class Activator
             make_attempts TINYINT UNSIGNED NOT NULL DEFAULT 0,
             make_response LONGTEXT,
             raw_payload LONGTEXT,
+            source VARCHAR(64) DEFAULT NULL,
             created_at DATETIME NOT NULL,
             PRIMARY KEY  (id),
             KEY idx_variant_date (variant_id, created_at),
@@ -139,7 +140,8 @@ final class Activator
             KEY idx_utm_source (utm_source),
             KEY idx_email (email),
             KEY idx_phone (phone),
-            KEY idx_make_status (make_status)
+            KEY idx_make_status (make_status),
+            KEY idx_source (source)
         ) {$charsetCollate};";
 
         $log = "CREATE TABLE {$prefix}cah_log (
